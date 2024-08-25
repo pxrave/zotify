@@ -157,9 +157,9 @@ The value is relative to the `ROOT_PATH` directory and may contain the following
 
 `{playlist}/{artist} - {song_name}`
 
-`{playlist}/{playlist_num} - {artist} - {song_name}`
+`{playlist}/{playlist_num}_{artist}_{song_name}`
 
-`{artist} - {song_name}`
+`{album_artist}/{album}/{album_num} - {song_name}`
 
 `{artist}/{album}/{album_num} - {artist} - {song_name}`
 
