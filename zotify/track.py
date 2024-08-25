@@ -179,7 +179,7 @@ def download_track(mode: str, track_id: str, extra_keys=None, wrapper_p_bars: li
         output_template = output_template.replace("{total_tracks}", fix_filename(total_tracks))
         output_template = output_template.replace("{id}", fix_filename(scraped_song_id))
         output_template = output_template.replace("{track_id}", fix_filename(track_id))
-        output_template = output_template.replace("{ext}", ext)
+        output_template += f".{ext}"
         
         filename = PurePath(Zotify.CONFIG.get_root_path()).joinpath(output_template)
         filedir = PurePath(filename).parent

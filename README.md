@@ -56,20 +56,20 @@ If an artist's URL is given, all albums by the specified artist will be download
 ## Advanced Options
 
 All these options can either be configured in the config or via the commandline, in case of both the commandline-option has higher priority.  
-Set arguments in the commandline like this: `-sc False` or `--codec mp3`. Wrap arguments containing spaces or non-alphanumeric characters (weird symbols) with quotes like this: `--output-liked-songs "Liked Songs/{song_name}.{ext}"`
+Set arguments in the commandline like this: `-sc False` or `--codec mp3`. Wrap arguments containing spaces or non-alphanumeric characters (weird symbols) with quotes like this: `--output-liked-songs "Liked Songs/{song_name}"`
 
 | Config Key                   | Command Line Flag                        | Default Value           | Description
 |------------------------------|------------------------------------------|-------------------------|------------------------------------------------------------------|
-| `ROOT_PATH`                  | `-rp`, `--root-path`                     | `~/Music/Zotify Music`  | Directory where Zotify saves music
-| `SAVE_CREDENTIALS`           | `--save-credentials`                     | True                    | Whether login credentials should be saved in a credentials.json
-| `CREDENTIALS_LOCATION`       | `--creds`, `--credentials-location`      |                         | Directory containing credentials.json
-| `OUTPUT`                     | `--output`                               |                         | Master output file pattern (see below)
-| `OUTPUT_PLAYLIST`            | `-op`, `--output-playlist`               | `{playlist}/{artist}_{song_name}.{ext}`                | Output file pattern for playlists
-| `OUTPUT_PLAYLIST_EXT`        | `-oe`, `--output-ext-playlist`           | `{playlist}/{playlist_num}_{artist}_{song_name}.{ext}` | Output file pattern for extended playlists
-| `OUTPUT_LIKED_SONGS`         | `-ol`, `--output-liked-songs`            | `Liked Songs/{artist}_{song_name}.{ext}`               | Output file pattern for user's Liked Songs
-| `OUTPUT_SINGLE`              | `-os`, `--output-single`                 | `{artist}/{album}/{artist} - {song_name}.{ext}`        | Output file pattern for single tracks
-| `OUTPUT_ALBUM`               | `-oa`, `--output-album`                  | `{album_artist}/{album}/{album_num} - {artist} - {song_name}.{ext}` | Output file pattern for albums
-| `ROOT_PODCAST_PATH`          | `-rpp`, `--root-podcast-path`            | `~/Music/Zotify Podcasts` | Directory where Zotify saves podcasts
+| `ROOT_PATH`                  | `-rp`, `--root-path`                     | `~/Music/Zotify Music`                           | Directory where Zotify saves music
+| `SAVE_CREDENTIALS`           | `--save-credentials`                     | True                                             | Whether login credentials should be saved
+| `CREDENTIALS_LOCATION`       | `--creds`, `--credentials-location`      |                                                  | Directory containing credentials.json
+| `OUTPUT`                     | `--output`                               |                                                  | Master output file pattern (see below)
+| `OUTPUT_PLAYLIST`            | `-op`, `--output-playlist`               | `{playlist}/{artist}_{song_name}`                | Output file pattern for playlists
+| `OUTPUT_PLAYLIST_EXT`        | `-oe`, `--output-ext-playlist`           | `{playlist}/{playlist_num}_{artist}_{song_name}` | Output file pattern for extended playlists
+| `OUTPUT_LIKED_SONGS`         | `-ol`, `--output-liked-songs`            | `Liked Songs/{artist}_{song_name}`               | Output file pattern for user's Liked Songs
+| `OUTPUT_SINGLE`              | `-os`, `--output-single`                 | `{artist}/{album}/{artist} - {song_name}`        | Output file pattern for single tracks
+| `OUTPUT_ALBUM`               | `-oa`, `--output-album`                  | `{album_artist}/{album}/{album_num} - {artist} - {song_name}` | Output file pattern for albums
+| `ROOT_PODCAST_PATH`          | `-rpp`, `--root-podcast-path`            | `~/Music/Zotify Podcasts`                                     | Directory where Zotify saves podcasts
 | `TEMP_DOWNLOAD_DIR`          | `-td`, `--temp-download-dir`             |           | Download tracks to a temporary directory first
 | `DOWNLOAD_FORMAT`            | `--codec`, `--download-format`           | copy      | Audio format/codec of downloads (aac, fdk_aac, m4a, mp3, ogg, opus, vorbis)
 | `DOWNLOAD_QUALITY`           | `-q`, `--download-quality`               | auto      | Audio quality of downloads (normal, high, very_high*)
@@ -148,7 +148,6 @@ The value is relative to the `ROOT_PATH` directory and may contain the following
 | `{track_number}`  | The track number
 | `{id}`            | The song id
 | `{track_id}`      | The track id
-| `{ext}`           | The file extension
 | `{album_id}`      | (only when downloading albums) ID of the album
 | `{album_num}`     | (only when downloading albums) Incrementing track number
 | `{playlist}`      | (only when downloading playlists) Name of the playlist 
@@ -156,13 +155,13 @@ The value is relative to the `ROOT_PATH` directory and may contain the following
 
 #### Example Values:
 
-`{playlist}/{artist} - {song_name}.{ext}`
+`{playlist}/{artist} - {song_name}`
 
-`{playlist}/{playlist_num} - {artist} - {song_name}.{ext}`
+`{playlist}/{playlist_num} - {artist} - {song_name}`
 
-`{artist} - {song_name}.{ext}`
+`{artist} - {song_name}`
 
-`{artist}/{album}/{album_num} - {artist} - {song_name}.{ext}`
+`{artist}/{album}/{album_num} - {artist} - {song_name}`
 
 ## Docker Usage
 
