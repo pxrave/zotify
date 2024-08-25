@@ -308,8 +308,8 @@ def download_track(mode: str, track_id: str, extra_keys=None, wrapper_p_bars: li
                     # add song ID to download directory's .song_ids file
                     if not check_local:
                         add_to_directory_song_ids(filedir, scraped_song_id, PurePath(filename).name, artists[0], name)
-                    
-                    if not Zotify.CONFIG.get_bulk_wait_time():
+
+                    if Zotify.CONFIG.get_bulk_wait_time():
                         time.sleep(Zotify.CONFIG.get_bulk_wait_time())
             
         except Exception as e:
