@@ -7,18 +7,18 @@
 </p>
 
 ## Features
-  - Downloads at up to 320kbps*
-  - Downloads directly from the source**
-  - Downloads podcasts, playlists, liked songs, albums, artists, singles.
-  - Downloads synced lyrics from the source
-  - Option to download in real time to appear more legitimate***
-  - Supports multiple audio formats
-  - Download directly from URL or use built-in in search
-  - Bulk downloads from a list of URLs in a text file or parsed directly as arguments
+- Downloads at up to 320kbps \*
+- Downloads directly from the source \*\*
+- Downloads podcasts, playlists, liked songs, albums, artists, singles.
+- Downloads synced lyrics from the source
+- Option to download in real time to reduce suspicious API request behavior \*\*\*
+- Supports multiple audio formats
+- Download directly from URL or use built-in in search
+- Bulk downloads from a list of URLs in a text file or parsed directly as arguments
 
-*Free accounts are limited to 160kbps. \
-**Audio files are NOT substituted with ones from other sources such as YouTube or Deezer, they are sourced directly. \
-***'real time' refers to downloading at the speed it would normally be streamed at (the duration of the track).
+\* Free accounts are limited to 160kbps \*\
+\*\* Audio files are NOT substituted with ones from other sources (such as YouTube or Deezer) \*\*\
+\*\*\* 'Real time' downloading limits at the speed of data transfer to typical streaming rates (download time ≈  duration of the track) \*\*\*
 
 ## Installation
 
@@ -38,29 +38,30 @@ See [INSTALLATION](INSTALLATION.md) for a more detailed and opinionated installa
 
 `zotify <track/album/playlist/episode/artist url>`   
 
-Downloads the track, album, playlist or podcast episode specified as a command line argument. 
-If an artist url is given, all albums by specified artist will be downloaded. Can take multiple urls.
+Download track(s), album(s), playlist(s), podcast episode(s), or artist(s) specified by the URL(s) passed as a command line argument(s). 
+If an artist's URL is given, all albums by the specified artist will be downloaded. Can take multiple URLs as multiple arguments.
 
-| Commandline parameter       | Function                                                                                       |
-|-----------------------------|------------------------------------------------------------------------------------------------|
-| (nothing)                   | Download the tracks/albums/playlists URLs from the parameter                                   |
-| `-d`, `--download`          | Download all tracks/albums/playlists URLs from the specified file                              |
-| `-p`, `--playlist`          | Downloads a saved playlist from your account                                                   |
-| `-l`, `--liked`             | Downloads all the liked songs from your account                                                |
-| `-f`, `--followed`          | Downloads all songs by all artists you follow                                                  |
-| `-s`, `--search`            | Searches for specified track, album, artist or playlist, loads search prompt if none are given |
-| `-c`, `--config-location`   | Specifies a directory containing a Zotify configuration file                                   |
-| `-h`, `--help`              | See this message                                                                               |
+| Command Line Flag           | Function                                                                               |
+|-----------------------------|----------------------------------------------------------------------------------------|
+| `-d`, `--download`          | Download all tracks/albums/episodes/playlists URLs within the file passed as argument  |
+| `-p`, `--playlist`          | Download playlist(s) saved by your account (interactive)                               |
+| `-l`, `--liked`             | Download all Liked Songs on your account                                               |
+| `-f`, `--followed`          | Download all songs by all followed artists                                             |
+| `-s`, `--search`            | Search tracks/albums/artists/playlists based on argument (interactive)                 |
+| `-u`, `--username`          | Account username                                                                       |
+| `--password`                | Account password                                                                       |
+| `-c`, `--config-location`   | Specify a directory containing a Zotify `config.json` file to load settings            |
+| `-h`, `--help`              | See this message                                                                       |
 
 ## Advanced Options
 
 All these options can either be configured in the config or via the commandline, in case of both the commandline-option has higher priority.  
-Be aware you have to set boolean values in the commandline like this: `--download-real-time=True` or `-sc False`
+Set arguments in the commandline like this: `-sc False` or `--codec mp3`. Wrap arguments containing spaces or non-alphanumeric characters (weird symbols) with quotes like this: `--output-liked-songs "Liked Songs/{song_name}.{ext}"`
 
-| Key (config)                 | Commandline parameter                    | Defaults                | Description
+| Config Key                   | Command Line Flag                        | Default Value           | Description
 |------------------------------|------------------------------------------|-------------------------|------------------------------------------------------------------|
 | `ROOT_PATH`                  | `-rp`, `--root-path`                     | `~/Music/Zotify Music`  | Directory where Zotify saves music
-| `SAVE_CREDENTIALS`           | `--save-credentials`                     | True                    | Whether Spotify credentials should be saved in a credentials.json
+| `SAVE_CREDENTIALS`           | `--save-credentials`                     | True                    | Whether login credentials should be saved in a credentials.json
 | `CREDENTIALS_LOCATION`       | `--creds`, `--credentials-location`      |                         | Directory containing credentials.json
 | `OUTPUT`                     | `--output`                               |                         | Master output file pattern (see below)
 | `OUTPUT_PLAYLIST`            | `-op`, `--output-playlist`               | `{playlist}/{artist}_{song_name}.{ext}`                | Output file pattern for playlists
@@ -89,7 +90,7 @@ Be aware you have to set boolean values in the commandline like this: `--downloa
 | `OVERRIDE_AUTO_WAIT`         | `--override-auto-wait`                   | False     | Totally disable wait time between songs with the risk of instability
 | `CHUNK_SIZE`                 | `--chunk-size`                           | 20000     | Chunk size for downloading
 | `DOWNLOAD_REAL_TIME`         | `-rt`, `--download-real-time`            | False     | Downloads songs as fast as they would be played, should prevent account bans
-| `LANGUAGE`                   | `--language`                             | en        | Language for spotify metadata
+| `LANGUAGE`                   | `--language`                             | en        | Language of metadata
 | `PRINT_SPLASH`               | `--print-splash`                         | False     | Show the Zotify logo at startup
 | `PRINT_SKIPS`                | `--print-skips`                          | True      | Show messages if a song is being skipped
 | `PRINT_DOWNLOAD_PROGRESS`    | `--print-download-progress`              | True      | Show song download progress bar
@@ -102,13 +103,13 @@ Be aware you have to set boolean values in the commandline like this: `--downloa
 | `PRINT_WARNINGS`             | `--print-warnings`                       | True      | Show warnings
 | `PRINT_ERRORS`               | `--print-errors`                         | True      | Show errors
 | `PRINT_API_ERRORS`           | `--print-api-errors`                     | True      | Show API errors
-| `FFMPEG_LOG_LEVEL`           | `--ffmpeg-log-level`                     | error     | Detail of FFMPEG's log when completing a transcoded download
+| `FFMPEG_LOG_LEVEL`           | `--ffmpeg-log-level`                     | error     | FFMPEG's logged level of detail when completing a transcoded download
 
-*very-high is limited to premium only  
+\* very_high (320k) is limited to Premium accounts only  
 
-## Configuration 
+## Configuration Files
 
-When `-c` (`--config-location`) is unspecified in the command line, the configuration file can be found in the following default locations:
+Using the `-c` (`--config-location`) flag does not set an alternate config location permanently. Alternate config locations must be specified in the command line each time Zotify is run. When unspecified, the configuration file will be read from and saved to the following default locations based on your operating system:
 
 | OS              | Location          
 |-----------------|--------------------------------------------------------------------|
@@ -116,9 +117,7 @@ When `-c` (`--config-location`) is unspecified in the command line, the configur
 | MacOS           | `/Users/<USERNAME>/Library/Application Support/Zotify/config.json` |
 | Linux           | `/home/<USERNAME>/.config/zotify/config.json`                      |
 
-Using `-c` (`--config-location`) does not set the config location permanently, it must be called with Zotify each time if not kept in the default location.
-
-To log out, just remove the configuration file and credentials file. Uninstalling Zotify does not remove either.
+To log out, just remove the configuration file and credentials file. Uninstalling Zotify does ***not*** remove either.
 
 ## Path Option Parsing
 
