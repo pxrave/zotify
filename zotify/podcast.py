@@ -110,7 +110,6 @@ def download_episode(episode_id, wrapper_p_bars: list | None = None) -> None:
         direct_download_url = resp["audio"]["items"][-1]["url"]
 
         download_directory = PurePath(Zotify.CONFIG.get_root_podcast_path()).joinpath(extra_paths)
-        # download_directory = os.path.realpath(download_directory)
         create_download_directory(download_directory)
 
         if "anon-podcast.scdn.co" in direct_download_url or "audio_preview_url" not in resp:
@@ -127,7 +126,7 @@ def download_episode(episode_id, wrapper_p_bars: list | None = None) -> None:
                 and Zotify.CONFIG.get_skip_existing()
             ):
                 prepare_download_loader.stop()
-                Printer.print(PrintChannel.SKIPS, '###   SKIPPING: "{podcast_name} - {episode_name}" (EPISODE ALREADY EXISTS)   ###')
+                Printer.print(PrintChannel.SKIPS, f'###   SKIPPING: "{podcast_name} - {episode_name}" (EPISODE ALREADY EXISTS)   ###')
                 Printer.print(PrintChannel.SKIPS, "\n\n")
                 return
 
