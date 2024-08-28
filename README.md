@@ -41,17 +41,20 @@ See [INSTALLATION](INSTALLATION.md) for a more detailed and opinionated installa
 Download track(s), album(s), playlist(s), podcast episode(s), or artist(s) specified by the URL(s) passed as a command line argument(s). 
 If an artist's URL is given, all albums by the specified artist will be downloaded. Can take multiple URLs as multiple arguments.
 
-| Command Line Flag           | Function                                                                               |
-|-----------------------------|----------------------------------------------------------------------------------------|
-| `-d`, `--download`          | Download all tracks/albums/episodes/playlists URLs within the file passed as argument  |
-| `-p`, `--playlist`          | Download playlist(s) saved by your account (interactive)                               |
-| `-l`, `--liked`             | Download all Liked Songs on your account                                               |
-| `-f`, `--followed`          | Download all songs by all followed artists                                             |
-| `-s`, `--search`            | Search tracks/albums/artists/playlists based on argument (interactive)                 |
-| `-u`, `--username`          | Account username                                                                       |
-| `--password`                | Account password                                                                       |
-| `-c`, `--config-location`   | Specify a directory containing a Zotify `config.json` file to load settings            |
-| `-h`, `--help`              | See this message                                                                       |
+| Command Line Flag             | Function                                                                               |
+|-------------------------------|----------------------------------------------------------------------------------------|
+| `-h`, `--help`                | See this message                                                                       |
+| `-c`, `--config-location`     | Specify a directory containing a Zotify `config.json` file to load settings            |
+| `-u`, `--username`            | Account username                                                                       |
+| `--password`                  | Account password                                                                       |
+
+| Command Line Flag (exclusive) | Function                                                                               |
+|-------------------------------|----------------------------------------------------------------------------------------|
+| `-d`, `--download`            | Download all tracks/albums/episodes/playlists URLs within the file passed as argument  |
+| `-p`, `--playlist`            | Download playlist(s) saved by your account (interactive)                               |
+| `-l`, `--liked`               | Download all Liked Songs on your account                                               |
+| `-f`, `--followed`            | Download all songs by all followed artists                                             |
+| `-s`, `--search`              | Search tracks/albums/artists/playlists based on argument (interactive)                 |
 
 ## Advanced Options
 
