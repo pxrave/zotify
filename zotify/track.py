@@ -12,7 +12,7 @@ from zotify.const import TRACKS, ALBUM, GENRES, NAME, ITEMS, DISC_NUMBER, TRACK_
     RELEASE_DATE, ID, TRACKS_URL, FOLLOWED_ARTISTS_URL, SAVED_TRACKS_URL, TRACK_STATS_URL, CODEC_MAP, EXT_MAP, DURATION_MS, \
     HREF, ARTISTS, WIDTH
 from zotify.termoutput import Printer, PrintChannel
-from zotify.utils import fix_filename, set_audio_tags, set_music_thumbnail, create_download_directory, \
+from zotify.utils import fix_filename, set_audio_tags, set_music_thumbnail, create_download_directory, add_to_m3u,\
     get_directory_song_ids, add_to_directory_song_ids, get_previously_downloaded, add_to_archive, fmt_seconds
 from zotify.zotify import Zotify
 import traceback
@@ -199,6 +199,9 @@ def download_track(mode: str, track_id: str, extra_keys=None, wrapper_p_bars: li
         if not check_local and check_name:
             c = len([file for file in Path(filedir).iterdir() if file.match(filename.stem + "*")])
             filename = PurePath(filedir).joinpath(f'{filename.stem}_{c}{filename.suffix}')
+        
+        if Zotify.CONFIG.get_export_m3u8():
+            add_to_m3u(filename, get_song_duration(track_id), song_name)
     
     except Exception as e:
         prepare_download_loader.stop()

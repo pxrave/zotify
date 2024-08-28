@@ -13,6 +13,7 @@ from zotify.config import CONFIG_VALUES
 def main():
     parser = argparse.ArgumentParser(prog='zotify',
         description='A music and podcast downloader needing only Python and FFMPEG.')
+    
     parser.add_argument('-ns', '--no-splash',
                         action='store_true',
                         help='Suppress the splash screen when loading')
@@ -28,6 +29,7 @@ def main():
                         type=str,
                         dest='password',
                         help='Account password')
+    
     group = parser.add_mutually_exclusive_group(required=False)
     group.add_argument('urls',
                        type=str,
@@ -55,7 +57,6 @@ def main():
                        type=str,
                        help='Download all tracks/albums/episodes/playlists URLs within the file passed as argument')
     
-
     for configkey in CONFIG_VALUES:
         parser.add_argument(*CONFIG_VALUES[configkey]['arg'],
                             type=CONFIG_VALUES[configkey]['type'],
@@ -63,9 +64,9 @@ def main():
                             default=None,
                             # help='Specify the value of the ['+configkey+'] config value'
                             )
-
+    
     parser.set_defaults(func=client)
-
+    
     args = parser.parse_args()
     args.func(args)
 

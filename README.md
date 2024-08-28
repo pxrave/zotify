@@ -72,7 +72,8 @@ Set arguments in the commandline like this: `-sc False` or `--codec mp3`. Wrap a
 | `OUTPUT_LIKED_SONGS`         | `-ol`, `--output-liked-songs`            | `Liked Songs/{artist}_{song_name}`               | Output file pattern for user's Liked Songs
 | `OUTPUT_SINGLE`              | `-os`, `--output-single`                 | `{artist}/{album}/{artist} - {song_name}`        | Output file pattern for single tracks
 | `OUTPUT_ALBUM`               | `-oa`, `--output-album`                  | `{album_artist}/{album}/{album_num} - {artist} - {song_name}` | Output file pattern for albums
-| `ROOT_PODCAST_PATH`          | `-rpp`, `--root-podcast-path`            | `~/Music/Zotify Podcasts`                                     | Directory where Zotify saves podcasts
+| `EXPORT_M3U8`                | `-e`, `--export-m3u8`                    | False                     | Export tracks/albums/episodes/playlists with an accompanying .m3u8 file
+| `ROOT_PODCAST_PATH`          | `-rpp`, `--root-podcast-path`            | `~/Music/Zotify Podcasts` | Directory where Zotify saves podcasts
 | `TEMP_DOWNLOAD_DIR`          | `-td`, `--temp-download-dir`             |           | Download tracks to a temporary directory first
 | `DOWNLOAD_FORMAT`            | `--codec`, `--download-format`           | copy      | Audio format/codec of downloads (aac, fdk_aac, m4a, mp3, ogg, opus, vorbis)
 | `DOWNLOAD_QUALITY`           | `-q`, `--download-quality`               | auto      | Audio quality of downloads (normal, high, very_high*)

@@ -16,11 +16,6 @@ from zotify.const import ARTIST, GENRE, TRACKTITLE, ALBUM, YEAR, DISCNUMBER, TRA
 from zotify.zotify import Zotify
 
 
-class MusicFormat(str, Enum):
-    MP3 = 'mp3',
-    OGG = 'ogg',
-
-
 def create_download_directory(download_path: str) -> None:
     """ Create directory and add a hidden file with song ids """
     Path(download_path).mkdir(parents=True, exist_ok=True)
@@ -49,9 +44,9 @@ def get_previously_downloaded() -> List[str]:
 
 def add_to_archive(song_id: str, filename: str, author_name: str, song_name: str) -> None:
     """ Adds song id to all time installed songs archive """
-
+    
     archive_path = Zotify.CONFIG.get_song_archive()
-
+    
     if Path(archive_path).exists():
         with open(archive_path, 'a', encoding='utf-8') as file:
             file.write(f'{song_id}\t{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}\t{author_name}\t{song_name}\t{filename}\n')
@@ -60,23 +55,36 @@ def add_to_archive(song_id: str, filename: str, author_name: str, song_name: str
             file.write(f'{song_id}\t{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}\t{author_name}\t{song_name}\t{filename}\n')
 
 
+def add_to_m3u(filename: PurePath, song_duration: float, song_name: str) -> None:
+    """ Adds song to a .m3u8 playlist"""
+    
+    m3u_path = Zotify.CONFIG.get_root_path() / (Zotify.datetime_launch + "_zotify.m3u8")
+    if not Path(m3u_path).exists():
+        with open(m3u_path, 'w', encoding='utf-8') as file:
+            file.write("#EXTM3U\n\n")
+    
+    with open(m3u_path, 'a', encoding='utf-8') as file:
+        file.write(f"#EXTINF:{int(song_duration)}, {song_name}\n")
+        file.write(f"{filename}\n\n")
+
+
 def get_directory_song_ids(download_path: str) -> List[str]:
     """ Gets song ids of songs in directory """
-
+    
     song_ids = []
     
     hidden_file_path = PurePath(download_path).joinpath('.song_ids')
-
+    
     if Path(hidden_file_path).is_file() and not Zotify.CONFIG.get_disable_directory_archives():
         with open(hidden_file_path, 'r', encoding='utf-8') as file:
             song_ids.extend([line.strip().split('\t')[0] for line in file.readlines()])
-
+    
     return song_ids
 
 
 def add_to_directory_song_ids(download_path: str, song_id: str, filename: str, author_name: str, song_name: str) -> None:
     """ Appends song_id to .song_ids file in directory """
-
+    
     hidden_file_path = PurePath(download_path).joinpath('.song_ids')
     if Zotify.CONFIG.get_disable_directory_archives():
         return
@@ -88,13 +96,13 @@ def add_to_directory_song_ids(download_path: str, song_id: str, filename: str, a
 
 def get_downloaded_song_duration(filename: str) -> float:
     """ Returns the downloaded file's duration in seconds """
-
+    
     command = ['ffprobe', '-show_entries', 'format=duration', '-i', f'{filename}']
     output = subprocess.run(command, capture_output=True)
-
+    
     duration = re.search(r'[\D]=([\d\.]*)', str(output.stdout)).groups()[0]
     duration = float(duration)
-
+    
     return duration
 
 

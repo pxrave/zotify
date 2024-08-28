@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 from pwinput import pwinput
-import time
+import datetime, time
 import requests
 from librespot.audio.decoders import VorbisOnlyAudioQuality
 from librespot.core import Session
@@ -15,10 +15,11 @@ class Zotify:
     SESSION: Session = None
     DOWNLOAD_QUALITY = None
     CONFIG: Config = Config()
-
+    
     def __init__(self, args):
         Zotify.CONFIG.load(args)
         Zotify.login(args)
+        Zotify.datetime_launch = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
     @classmethod
     def login(cls, args):

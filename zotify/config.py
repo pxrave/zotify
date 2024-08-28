@@ -49,6 +49,7 @@ PRINT_URL_PROGRESS = "PRINT_URL_PROGRESS"
 PRINT_ALBUM_PROGRESS = "PRINT_ALBUM_PROGRESS"
 PRINT_ARTIST_PROGRESS = "PRINT_ARTIST_PROGRESS"
 PRINT_PLAYLIST_PROGRESS = "PRINT_PLAYLIST_PROGRESS"
+EXPORT_M3U8 = "EXPORT_M3U8"
 
 
 CONFIG_VALUES = {
@@ -56,16 +57,22 @@ CONFIG_VALUES = {
     SAVE_CREDENTIALS:           { 'default': 'True',                    'type': bool,   'arg': ('--save-credentials'                     ,) },
     CREDENTIALS_LOCATION:       { 'default': '',                        'type': str,    'arg': ('--creds', '--credentials-location'      ,) },
     OUTPUT:                     { 'default': '',                        'type': str,    'arg': ('--output'                               ,) },
-    OUTPUT_PLAYLIST:            { 'default': '{playlist}/{artist}_{song_name}',                       'type': str,  
-        'arg': ('-op', '--output-playlist'     ,) },
-    OUTPUT_PLAYLIST_EXT:        { 'default': '{playlist}/{playlist_num}_{artist}_{song_name}',        'type': str,  
-        'arg': ('-oe', '--output-ext-playlist' ,) },
-    OUTPUT_LIKED_SONGS:         { 'default': 'Liked Songs/{artist}_{song_name}',                      'type': str,  
-        'arg': ('-ol', '--output-liked-songs'  ,) },
-    OUTPUT_SINGLE:              { 'default': '{artist}/{album}/{artist} - {song_name}',               'type': str,  
-        'arg': ('-os', '--output-single'       ,) },
-    OUTPUT_ALBUM:               { 'default': '{artist}/{album}/{album_num} - {artist} - {song_name}', 'type': str,  
-        'arg': ('-oa', '--output-album'        ,) },
+    OUTPUT_PLAYLIST:            { 'default': '{playlist}/{artist}_{song_name}',
+                                  'type': str, 
+                                  'arg': ('-op', '--output-playlist' ,) },
+    OUTPUT_PLAYLIST_EXT:        { 'default': '{playlist}/{playlist_num}_{artist}_{song_name}',
+                                  'type': str,  
+                                  'arg': ('-oe', '--output-ext-playlist' ,) },
+    OUTPUT_LIKED_SONGS:         { 'default': 'Liked Songs/{artist}_{song_name}',
+                                  'type': str,
+                                  'arg': ('-ol', '--output-liked-songs' ,) },
+    OUTPUT_SINGLE:              { 'default': '{artist}/{album}/{artist} - {song_name}',
+                                  'type': str,
+                                  'arg': ('-os', '--output-single' ,) },
+    OUTPUT_ALBUM:               { 'default': '{artist}/{album}/{album_num} - {artist} - {song_name}',
+                                  'type': str,
+                                  'arg': ('-oa', '--output-album' ,) },
+    EXPORT_M3U8:                { 'default': 'False',                   'type': bool,   'arg': ('-e, --export-m3u8'                      ,) },
     ROOT_PODCAST_PATH:          { 'default': '~/Music/Zotify Podcasts', 'type': str,    'arg': ('-rpp', '--root-podcast-path'            ,) },
     TEMP_DOWNLOAD_DIR:          { 'default': '',                        'type': str,    'arg': ('-td', '--temp-download-dir'             ,) },
     DOWNLOAD_FORMAT:            { 'default': 'copy',                    'type': str,    'arg': ('--codec', '--download-format'           ,) },
@@ -387,3 +394,7 @@ class Config:
         return cls.get(PRINT_DOWNLOAD_PROGRESS) or cls.get(PRINT_URL_PROGRESS) \
            or cls.get(PRINT_ALBUM_PROGRESS) or cls.get(PRINT_ARTIST_PROGRESS) \
         or cls.get(PRINT_PLAYLIST_PROGRESS)
+    
+    @classmethod
+    def get_export_m3u8(cls) -> bool:
+        return cls.get(EXPORT_M3U8)

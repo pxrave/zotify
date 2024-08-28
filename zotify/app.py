@@ -30,29 +30,29 @@ def client(args) -> None:
         'very_high': AudioQuality.VERY_HIGH
     }
     Zotify.DOWNLOAD_QUALITY = quality_options[Zotify.CONFIG.get_download_quality()]
-
+    
     if args.download:
         urls = []
         filename = args.download
         if Path(filename).exists():
             with open(filename, 'r', encoding='utf-8') as file:
                 urls.extend([line.strip() for line in file.readlines()])
-
+            
             download_from_urls(urls)
-
+        
         else:
             Printer.print(PrintChannel.ERRORS, f'File {filename} not found.\n')
         return
-
+    
     if args.urls:
         if len(args.urls) > 0:
             download_from_urls(args.urls)
         return
-
+    
     if args.playlist:
         download_from_user_playlist()
         return
-
+    
     if args.liked_songs:
         liked_songs = get_saved_tracks()
         
@@ -85,7 +85,7 @@ def client(args) -> None:
             for bar in wrapper_p_bars:
                 if type(bar) != int: bar.refresh()
         return
-
+    
     if args.search:
         if args.search == ' ':
             search_text = ''
@@ -96,7 +96,7 @@ def client(args) -> None:
             if not download_from_urls([args.search]):
                 search(args.search)
         return
-
+    
     else:
         search_text = ''
         while len(search_text) == 0:
@@ -145,7 +145,7 @@ def search(search_term):
               'offset': '0',
               'q': search_term,
               'type': 'track,album,artist,playlist'}
-
+    
     # Parse args
     splits = search_term.split()
     for split in splits:
@@ -180,10 +180,10 @@ def search(search_term):
 
                 passed_types.append(splits[i])
             params['type'] = ','.join(passed_types)
-
+    
     if len(params['type']) == 0:
         params['type'] = 'track,album,artist,playlist'
-
+    
     # Clean search term
     search_term_list = []
     for split in splits:
@@ -193,12 +193,12 @@ def search(search_term):
     if not search_term_list:
         raise ValueError("Invalid query.")
     params["q"] = ' '.join(search_term_list)
-
+    
     resp = Zotify.invoke_url_with_params(SEARCH_URL, **params)
-
+    
     counter = 1
     dics = []
-
+    
     total_tracks = 0
     if TRACK in params['type'].split(','):
         tracks = resp[TRACKS][ITEMS]
@@ -226,7 +226,7 @@ def search(search_term):
             print('\n')
             del tracks
             del track_data
-
+    
     total_albums = 0
     if ALBUM in params['type'].split(','):
         albums = resp[ALBUMS][ITEMS]
@@ -249,7 +249,7 @@ def search(search_term):
             print('\n')
             del albums
             del album_data
-
+    
     total_artists = 0
     if ARTIST in params['type'].split(','):
         artists = resp[ARTISTS][ITEMS]
