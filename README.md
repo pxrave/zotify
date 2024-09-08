@@ -39,7 +39,7 @@ See [INSTALLATION](INSTALLATION.md) for a more detailed and opinionated installa
 `zotify <track/album/playlist/episode/artist url>`   
 
 Download track(s), album(s), playlist(s), podcast episode(s), or artist(s) specified by the URL(s) passed as a command line argument(s). 
-If an artist's URL is given, all albums by the specified artist will be downloaded. Can take multiple URLs as multiple arguments.
+If an artist's URL is given, all albums by the specified artist will be downloaded. Can take multiple URLs as multiple arguments, which must be passed within quotes.
 
 | Command Line Flag             | Function                                                                               |
 |-------------------------------|----------------------------------------------------------------------------------------|

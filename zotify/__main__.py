@@ -36,7 +36,7 @@ def main():
                        # action='extend',
                        default='',
                        nargs='*',
-                       help='Download track(s), album(s), playlist(s), podcast episode(s), or artist(s) specified by the URL(s) passed as a command line argument(s). If an artist\'s URL is given, all albums by the specified artist will be downloaded. Can take multiple URLs as multiple arguments.')
+                       help='Download track(s), album(s), playlist(s), podcast episode(s), or artist(s) specified by the URL(s) passed as a command line argument(s). If an artist\'s URL is given, all albums by the specified artist will be downloaded. Can take multiple URLs as multiple arguments, which must be passed within quotes.')
     group.add_argument('-l', '--liked',
                        dest='liked_songs',
                        action='store_true',
