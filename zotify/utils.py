@@ -55,12 +55,18 @@ def add_to_archive(song_id: str, filename: str, author_name: str, song_name: str
             file.write(f'{song_id}\t{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}\t{author_name}\t{song_name}\t{filename}\n')
 
 
-def add_to_m3u(song_filename: PurePath, song_duration: float, song_name: str, m3u_dir: PurePath | None = None) -> str | None:
+def add_to_m3u8(mode: str, song_duration: float, song_name: str, song_filename: PurePath, m3u_dir: PurePath | None = None) -> str | None:
     """ Adds song to a .m3u8 playlist, returning the song label in m3u8 format"""
     
     if m3u_dir is None:
         m3u_dir = Zotify.CONFIG.get_root_path()
-    m3u_path = m3u_dir / (Zotify.datetime_launch + "_zotify.m3u8")
+    
+    if mode == "liked" and Zotify.CONFIG.get_liked_songs_archive_m3u8() and \
+    (not Path(m3u_dir / "Liked Songs.m3u8").exists() or "justCreatedLikedSongsM3U8" in globals()):
+        m3u_path = m3u_dir / "Liked Songs.m3u8"
+        global justCreatedLikedSongsM3U8; justCreatedLikedSongsM3U8 = True # hacky, terrible, truly awful: too bad!
+    else:
+        m3u_path = m3u_dir / (Zotify.datetime_launch + "_zotify.m3u8")
     
     if not Path(m3u_path).exists():
         with open(m3u_path, 'w', encoding='utf-8') as file:
@@ -74,7 +80,7 @@ def add_to_m3u(song_filename: PurePath, song_duration: float, song_name: str, m3
     return song_label_m3u
 
 
-def fetch_m3u_songs(m3u_path: PurePath) -> list[str] | None:
+def fetch_m3u8_songs(m3u_path: PurePath) -> list[str] | None:
     """ Fetches the songs and associated file paths in an .m3u8 playlist"""
     
     if not Path(m3u_path).exists():

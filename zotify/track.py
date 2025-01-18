@@ -11,8 +11,9 @@ import ffmpy
 from zotify.const import TRACKS, ALBUM, GENRES, NAME, ITEMS, DISC_NUMBER, TRACK_NUMBER, TOTAL_TRACKS, IS_PLAYABLE, ARTISTS, IMAGES, URL, \
     RELEASE_DATE, ID, TRACKS_URL, FOLLOWED_ARTISTS_URL, SAVED_TRACKS_URL, TRACK_STATS_URL, CODEC_MAP, EXT_MAP, DURATION_MS, \
     HREF, ARTISTS, WIDTH
+from zotify.config import EXPORT_M3U8
 from zotify.termoutput import Printer, PrintChannel
-from zotify.utils import fix_filename, set_audio_tags, set_music_thumbnail, create_download_directory, add_to_m3u, fetch_m3u_songs, \
+from zotify.utils import fix_filename, set_audio_tags, set_music_thumbnail, create_download_directory, add_to_m3u8, fetch_m3u8_songs, \
     get_directory_song_ids, add_to_directory_song_ids, get_previously_downloaded, add_to_archive, fmt_seconds
 from zotify.zotify import Zotify
 import traceback
@@ -201,17 +202,15 @@ def download_track(mode: str, track_id: str, extra_keys=None, wrapper_p_bars: li
             filename = PurePath(filedir).joinpath(f'{filename.stem}_{c}{filename.suffix}')
         
         if Zotify.CONFIG.get_export_m3u8():
-            if "skip_liked_m3u" not in globals(): # hacky, but too bad!
-                song_label = add_to_m3u(filename, get_song_duration(track_id), song_name, filedir)
-                if mode == "liked":
-                    m3u_path = filedir / "Liked Songs.m3u8"
-                    songs_m3u = fetch_m3u_songs(m3u_path)
-                    if songs_m3u is not None and song_label in songs_m3u[0]:
-                        global skip_liked_m3u
-                        skip_liked_m3u = True
-                        Path(filedir / (Zotify.datetime_launch + "_zotify.m3u8")).replace(m3u_path)
-                        with open(m3u_path, 'a', encoding='utf-8') as file:
-                            file.writelines(songs_m3u[3:])
+            m3u_path = filedir / "Liked Songs.m3u8"
+            songs_m3u = fetch_m3u8_songs(m3u_path)
+            song_label = add_to_m3u8(mode, get_song_duration(track_id), song_name, filename, filedir)
+            if mode == "liked" and Zotify.CONFIG.get_liked_songs_archive_m3u8():
+                if songs_m3u is not None and song_label in songs_m3u[0]:
+                    Zotify.CONFIG.Values[EXPORT_M3U8] = False
+                    Path(filedir / (Zotify.datetime_launch + "_zotify.m3u8")).replace(m3u_path)
+                    with open(m3u_path, 'a', encoding='utf-8') as file:
+                        file.writelines(songs_m3u[3:])
     
     except Exception as e:
         prepare_download_loader.stop()

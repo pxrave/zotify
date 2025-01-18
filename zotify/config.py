@@ -37,19 +37,20 @@ PRINT_WARNINGS = 'PRINT_WARNINGS'
 RETRY_ATTEMPTS = 'RETRY_ATTEMPTS'
 CONFIG_VERSION = 'CONFIG_VERSION'
 DOWNLOAD_LYRICS = 'DOWNLOAD_LYRICS'
-OUTPUT_PLAYLIST = "OUTPUT_PLAYLIST"
-OUTPUT_PLAYLIST_EXT = "OUTPUT_PLAYLIST_EXT"
-OUTPUT_LIKED_SONGS = "OUTPUT_LIKED_SONGS"
-OUTPUT_SINGLE = "OUTPUT_SINGLE"
-OUTPUT_ALBUM = "OUTPUT_ALBUM"
-DISABLE_DIRECTORY_ARCHIVES = "DISABLE_DIRECTORY_ARCHIVES"
-LYRICS_LOCATION = "LYRICS_LOCATION"
-FFMPEG_LOG_LEVEL = "FFMPEG_LOG_LEVEL"
-PRINT_URL_PROGRESS = "PRINT_URL_PROGRESS"
-PRINT_ALBUM_PROGRESS = "PRINT_ALBUM_PROGRESS"
-PRINT_ARTIST_PROGRESS = "PRINT_ARTIST_PROGRESS"
-PRINT_PLAYLIST_PROGRESS = "PRINT_PLAYLIST_PROGRESS"
-EXPORT_M3U8 = "EXPORT_M3U8"
+OUTPUT_PLAYLIST = 'OUTPUT_PLAYLIST'
+OUTPUT_PLAYLIST_EXT = 'OUTPUT_PLAYLIST_EXT'
+OUTPUT_LIKED_SONGS = 'OUTPUT_LIKED_SONGS'
+OUTPUT_SINGLE = 'OUTPUT_SINGLE'
+OUTPUT_ALBUM = 'OUTPUT_ALBUM'
+DISABLE_DIRECTORY_ARCHIVES = 'DISABLE_DIRECTORY_ARCHIVES'
+LYRICS_LOCATION = 'LYRICS_LOCATION'
+FFMPEG_LOG_LEVEL = 'FFMPEG_LOG_LEVEL'
+PRINT_URL_PROGRESS = 'PRINT_URL_PROGRESS'
+PRINT_ALBUM_PROGRESS = 'PRINT_ALBUM_PROGRESS'
+PRINT_ARTIST_PROGRESS = 'PRINT_ARTIST_PROGRESS'
+PRINT_PLAYLIST_PROGRESS = 'PRINT_PLAYLIST_PROGRESS'
+EXPORT_M3U8 = 'EXPORT_M3U8'
+LIKED_SONGS_ARCHIVE_M3U8 = 'LIKED_SONGS_ARCHIVE_M3U8'
 
 
 CONFIG_VALUES = {
@@ -73,6 +74,7 @@ CONFIG_VALUES = {
                                   'type': str,
                                   'arg': ('-oa', '--output-album' ,) },
     EXPORT_M3U8:                { 'default': 'False',                   'type': bool,   'arg': ('-e, --export-m3u8'                      ,) },
+    LIKED_SONGS_ARCHIVE_M3U8:   { 'default': 'True',                    'type': bool,   'arg': ('--liked-songs-archive-m3u8'             ,) },
     ROOT_PODCAST_PATH:          { 'default': '~/Music/Zotify Podcasts', 'type': str,    'arg': ('-rpp', '--root-podcast-path'            ,) },
     TEMP_DOWNLOAD_DIR:          { 'default': '',                        'type': str,    'arg': ('-td', '--temp-download-dir'             ,) },
     DOWNLOAD_FORMAT:            { 'default': 'copy',                    'type': str,    'arg': ('--codec', '--download-format'           ,) },
@@ -398,3 +400,7 @@ class Config:
     @classmethod
     def get_export_m3u8(cls) -> bool:
         return cls.get(EXPORT_M3U8)
+    
+    @classmethod
+    def get_liked_songs_archive_m3u8(cls) -> bool:
+        return cls.get(LIKED_SONGS_ARCHIVE_M3U8)
