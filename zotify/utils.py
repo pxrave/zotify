@@ -55,17 +55,38 @@ def add_to_archive(song_id: str, filename: str, author_name: str, song_name: str
             file.write(f'{song_id}\t{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}\t{author_name}\t{song_name}\t{filename}\n')
 
 
-def add_to_m3u(filename: PurePath, song_duration: float, song_name: str) -> None:
-    """ Adds song to a .m3u8 playlist"""
+def add_to_m3u(song_filename: PurePath, song_duration: float, song_name: str, m3u_dir: PurePath | None = None) -> str | None:
+    """ Adds song to a .m3u8 playlist, returning the song label in m3u8 format"""
     
-    m3u_path = Zotify.CONFIG.get_root_path() / (Zotify.datetime_launch + "_zotify.m3u8")
+    if m3u_dir is None:
+        m3u_dir = Zotify.CONFIG.get_root_path()
+    m3u_path = m3u_dir / (Zotify.datetime_launch + "_zotify.m3u8")
+    
     if not Path(m3u_path).exists():
         with open(m3u_path, 'w', encoding='utf-8') as file:
             file.write("#EXTM3U\n\n")
     
+    song_label_m3u = None
     with open(m3u_path, 'a', encoding='utf-8') as file:
-        file.write(f"#EXTINF:{int(song_duration)}, {song_name}\n")
-        file.write(f"{filename}\n\n")
+        song_label_m3u = f"#EXTINF:{int(song_duration)}, {song_name}\n"
+        file.write(song_label_m3u)
+        file.write(f"{song_filename}\n\n")
+    return song_label_m3u
+
+
+def fetch_m3u_songs(m3u_path: PurePath) -> list[str] | None:
+    """ Fetches the songs and associated file paths in an .m3u8 playlist"""
+    
+    if not Path(m3u_path).exists():
+        return
+    
+    with open(m3u_path, 'r', encoding='utf-8') as file:
+        linesraw = file.readlines()[2:-1]
+        # group by song and filepath
+        # songsgrouped = []
+        # for i in range(len(linesraw)//3):
+        #     songsgrouped.append(linesraw[3*i:3*i+3])
+    return linesraw
 
 
 def get_directory_song_ids(download_path: str) -> List[str]:

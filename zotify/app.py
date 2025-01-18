@@ -103,6 +103,7 @@ def client(args) -> None:
             search_text = input('Enter search: ')
         search(search_text)
 
+
 def download_from_urls(urls: list[str]) -> bool:
     """ Downloads from a list of urls """
     download = False
