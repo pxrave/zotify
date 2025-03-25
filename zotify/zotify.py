@@ -6,6 +6,7 @@ import requests
 from librespot.audio.decoders import VorbisOnlyAudioQuality
 from librespot.core import Session
 
+from zotify import OAuth, Session
 from zotify.const import TYPE, \
     PREMIUM, USER_READ_EMAIL, OFFSET, LIMIT, \
     PLAYLIST_READ_PRIVATE, USER_LIBRARY_READ, USER_FOLLOW_READ
@@ -25,29 +26,28 @@ class Zotify:
     def login(cls, args):
         """ Authenticates with Spotify and saves credentials to a file """
 
-        cred_location = Config.get_credentials_location()
-
-        if Path(cred_location).is_file():
-            try:
-                conf = Session.Configuration.Builder().set_store_credentials(False).build()
-                cls.SESSION = Session.Builder(conf).stored_file(cred_location).create()
-                return
-            except RuntimeError:
-                pass
-        while True:
-            user_name = args.username if args.username else ''
-            while len(user_name) == 0:
-                user_name = input('Username: ')
-            password = args.password if args.password else pwinput(prompt='Password: ', mask='*')
-            try:
-                if Config.get_save_credentials():
-                    conf = Session.Configuration.Builder().set_stored_credential_file(cred_location).build()
-                else:
-                    conf = Session.Configuration.Builder().set_store_credentials(False).build()
-                cls.SESSION = Session.Builder(conf).user_pass(user_name, password).create()
-                return
-            except RuntimeError:
-                pass
+        # Create session
+        if args.username not in {None, ""} and args.token not in {None, ""}:
+            oauth = OAuth(args.username)
+            oauth.set_token(args.token, OAuth.RequestType.REFRESH)
+            cls.SESSION = Session.from_oauth(
+                oauth, cls.CONFIG.get_credentials_location(), cls.CONFIG.get_language()
+            )
+        elif cls.CONFIG.get_credentials_location() and Path(cls.CONFIG.get_credentials_location()).exists():
+            cls.SESSION = Session.from_file(
+                cls.CONFIG.get_credentials_location(),
+                cls.CONFIG.get_language(),
+            )
+        else:
+            username = args.username
+            while username == "":
+                username = input("Username: ")
+            oauth = OAuth(username)
+            auth_url = oauth.auth_interactive()
+            print(f"\nClick on the following link to login:\n{auth_url}")
+            cls.SESSION = Session.from_oauth(
+                oauth, cls.CONFIG.get_credentials_location(), cls.CONFIG.get_language()
+            )
 
     @classmethod
     def get_content_stream(cls, content_id, quality):

@@ -160,7 +160,7 @@ class Config:
         
         if args.no_splash:
             cls.Values[PRINT_SPLASH] = False
-        
+    
     @classmethod
     def get_default_json(cls) -> Any:
         r = {}

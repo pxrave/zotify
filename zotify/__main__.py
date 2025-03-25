@@ -29,6 +29,10 @@ def main():
                         type=str,
                         dest='password',
                         help='Account password')
+    parser.add_argument('--token',
+                        type=str,
+                        dest='token',
+                        help='Auhentcation token')
     
     group = parser.add_mutually_exclusive_group(required=False)
     group.add_argument('urls',
