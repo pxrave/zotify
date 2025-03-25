@@ -4,7 +4,6 @@ import os
 import platform
 import re
 import subprocess
-from enum import Enum
 from pathlib import Path, PurePath
 from typing import List, Tuple
 
