@@ -5,7 +5,6 @@ from pathlib import Path
 from zotify.album import download_album, download_artist_albums
 from zotify.const import TRACK, NAME, ID, ARTIST, ARTISTS, ITEMS, TRACKS, EXPLICIT, ALBUM, ALBUMS, \
     OWNER, PLAYLIST, PLAYLISTS, DISPLAY_NAME
-from zotify.loader import Loader
 from zotify.playlist import get_playlist_info, download_from_user_playlist, download_playlist
 from zotify.podcast import download_episode, download_show
 from zotify.termoutput import Printer, PrintChannel

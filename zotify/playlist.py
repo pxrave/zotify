@@ -1,6 +1,6 @@
 from zotify.const import ITEMS, ID, TRACK, NAME, TYPE
 from zotify.podcast import download_episode
-from zotify.termoutput import Printer, PrintChannel
+from zotify.termoutput import Printer
 from zotify.track import download_track
 from zotify.utils import split_input
 from zotify.zotify import Zotify
