@@ -114,8 +114,7 @@ def download_episode(episode_id, wrapper_p_bars: list | None = None) -> None:
 
         if "anon-podcast.scdn.co" in direct_download_url or "audio_preview_url" not in resp:
             episode_id = EpisodeId.from_base62(episode_id)
-            stream = Zotify.get_content_stream(
-                episode_id, Zotify.DOWNLOAD_QUALITY)
+            stream = Zotify.get_content_stream(episode_id, Zotify.DOWNLOAD_QUALITY)
 
             total_size = stream.input_stream.size
 

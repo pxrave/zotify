@@ -198,9 +198,27 @@ def conv_artist_format(artists) -> str:
     return ', '.join(artists)
 
 
-def set_music_thumbnail(filename, image_url) -> None:
-    """ Downloads cover artwork """
+def set_music_thumbnail(filename: PurePath, image_url, mode: str) -> None:
+    """ Fetch an album cover image, set album cover tag, and save to file if desired """
+    
+    # jpeg format expected from request
     img = requests.get(image_url).content
+    set_music_thumbnail_tag(filename, img)
+    
+    if not Zotify.CONFIG.get_album_art_jpg_file():
+        return
+    
+    jpg_filename = 'cover.jpg' if '{album}' in Zotify.CONFIG.get_output(mode) else filename.stem + '.jpg'
+    jpg_path = Path(filename).parent.joinpath(jpg_filename)
+    
+    if not jpg_path.exists():
+        with open(jpg_path, 'wb') as jpg_file:
+            jpg_file.write(img)
+
+
+def set_music_thumbnail_tag(filename, img: bytes) -> None:
+    """ Sets an image as a music file's cover artwork """
+    
     tags = music_tag.load_file(filename)
     tags[ARTWORK] = img
     tags.save()

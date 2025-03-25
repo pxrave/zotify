@@ -51,6 +51,7 @@ PRINT_ARTIST_PROGRESS = 'PRINT_ARTIST_PROGRESS'
 PRINT_PLAYLIST_PROGRESS = 'PRINT_PLAYLIST_PROGRESS'
 EXPORT_M3U8 = 'EXPORT_M3U8'
 LIKED_SONGS_ARCHIVE_M3U8 = 'LIKED_SONGS_ARCHIVE_M3U8'
+ALBUM_ART_JPG_FILE = 'ALBUM_ART_JPG_FILE'
 
 
 CONFIG_VALUES = {
@@ -80,6 +81,7 @@ CONFIG_VALUES = {
     DOWNLOAD_FORMAT:            { 'default': 'copy',                    'type': str,    'arg': ('--codec', '--download-format'           ,) },
     DOWNLOAD_QUALITY:           { 'default': 'auto',                    'type': str,    'arg': ('-q', '--download-quality'               ,) },
     TRANSCODE_BITRATE:          { 'default': 'auto',                    'type': str,    'arg': ('-b', '--bitrate', '--transcode-bitrate' ,) },
+    ALBUM_ART_JPG_FILE:         { 'default': 'False',                   'type': bool,   'arg': ('--album-art-jpg-file'                   ,) },
     SONG_ARCHIVE_LOCATION:      { 'default': '',                        'type': str,    'arg': ('--song-archive-location'                ,) },
     DISABLE_DIRECTORY_ARCHIVES: { 'default': 'False',                   'type': bool,   'arg': ('--disable-directory-archives'           ,) },
     SPLIT_ALBUM_DISCS:          { 'default': 'False',                   'type': bool,   'arg': ('--split-album-discs'                    ,) },
@@ -404,3 +406,7 @@ class Config:
     @classmethod
     def get_liked_songs_archive_m3u8(cls) -> bool:
         return cls.get(LIKED_SONGS_ARCHIVE_M3U8)
+    
+    @classmethod
+    def get_album_art_jpg_file(cls) -> bool:
+        return cls.get(ALBUM_ART_JPG_FILE)
