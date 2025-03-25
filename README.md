@@ -49,6 +49,7 @@ If an artist's URL is given, all albums by the specified artist will be download
 | `-c`, `--config-location`     | Specify a directory containing a Zotify `config.json` file to load settings            |
 | `-u`, `--username`            | Account username                                                                       |
 | `--password`                  | Account password                                                                       |
+| `--token`                     | Authentication token                                                                    |
 
 | Command Line Flag (exclusive) | Function                                                                               |
 |-------------------------------|----------------------------------------------------------------------------------------|

@@ -32,7 +32,7 @@ def main():
     parser.add_argument('--token',
                         type=str,
                         dest='token',
-                        help='Auhentcation token')
+                        help='Authentication token')
     
     group = parser.add_mutually_exclusive_group(required=False)
     group.add_argument('urls',
