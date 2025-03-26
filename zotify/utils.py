@@ -360,5 +360,5 @@ def fmt_seconds(secs: float) -> str:
         return f'{h}'.zfill(2) + ':' + f'{m}'.zfill(2) + ':' + f'{s}'.zfill(2)
 
 
-def strptime_utc(dtstr):
-        return datetime.datetime.strptime(dtstr[:-1], '%Y-%m-%dT%H:%M:%S').replace(tzinfo=datetime.timezone.utc)
+def strptime_utc(dtstr) -> datetime.datetime:
+    return datetime.datetime.strptime(dtstr[:-1], '%Y-%m-%dT%H:%M:%S').replace(tzinfo=datetime.timezone.utc)
