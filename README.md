@@ -49,7 +49,7 @@ If an artist's URL is given, all albums by the specified artist will be download
 | `-c`, `--config-location`     | Specify a directory containing a Zotify `config.json` file to load settings            |
 | `-u`, `--username`            | Account username                                                                       |
 | `--password`                  | Account password                                                                       |
-| `--token`                     | Authentication token                                                                    |
+| `--token`                     | Authentication token                                                                   |
 
 | Command Line Flag (exclusive) | Function                                                                               |
 |-------------------------------|----------------------------------------------------------------------------------------|
@@ -85,6 +85,7 @@ Set arguments in the commandline like this: `-sc False` or `--codec mp3`. Wrap a
 | `ALBUM_ART_JPG_FILE`         | `--album-art-jpg-file`                   | False     | Save album art as a separate .jpg file                                                    |
 | `SONG_ARCHIVE_LOCATION`      | `--song-archive-location`                |           | Directory where Zotify saves the global song_archive file                                 |
 | `DISABLE_DIRECTORY_ARCHIVES` | `--disable-directory-archives`           | False     | Disable local song_archive in download directories                                        |
+| `MAX_FILENAME_LENGTH`        | `--max-filename-length`                  | 0         | Maximum character length of filenames, truncated to fit, 0 meaning no limit               |
 | `SPLIT_ALBUM_DISCS`          | `--split-album-discs`                    | False     | Saves each disk in its own folder                                                         |
 | `DOWNLOAD_LYRICS`            | `--download-lyrics`                      | True      | Downloads synced lyrics in .lrc format, uses unsynced as fallback                         |
 | `LYRICS_LOCATION`            | `--lyrics-location`                      |           | Directory where Zotify saves lyrics files (default is output directory)                   |

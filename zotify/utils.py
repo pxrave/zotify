@@ -328,7 +328,13 @@ def fix_filename(name):
     >>> all('_' == fix_filename(chr(i)) for i in list(range(32)))
     True
     """
-    return re.sub(r'[/\\:|<>"?*\0-\x1f]|^(AUX|COM[1-9]|CON|LPT[1-9]|NUL|PRN)(?![^.])|^\s|[\s.]$', "_", str(name), flags=re.IGNORECASE)
+    name = re.sub(r'[/\\:|<>"?*\0-\x1f]|^(AUX|COM[1-9]|CON|LPT[1-9]|NUL|PRN)(?![^.])|^\s|[\s.]$', "_", str(name), flags=re.IGNORECASE)
+    
+    maxlen = Zotify.CONFIG.get_max_filename_length()
+    if maxlen and len(name) > maxlen:
+        name = name[:maxlen]
+    
+    return name
 
 
 def fmt_seconds(secs: float) -> str:

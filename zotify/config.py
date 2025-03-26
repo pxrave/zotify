@@ -52,7 +52,7 @@ PRINT_PLAYLIST_PROGRESS = 'PRINT_PLAYLIST_PROGRESS'
 EXPORT_M3U8 = 'EXPORT_M3U8'
 LIKED_SONGS_ARCHIVE_M3U8 = 'LIKED_SONGS_ARCHIVE_M3U8'
 ALBUM_ART_JPG_FILE = 'ALBUM_ART_JPG_FILE'
-
+MAX_FILENAME_LENGTH = 'MAX_FILENAME_LENGTH'
 
 CONFIG_VALUES = {
     ROOT_PATH:                  { 'default': '~/Music/Zotify Music',    'type': str,    'arg': ('-rp', '--root-path'                     ,) },
@@ -77,6 +77,7 @@ CONFIG_VALUES = {
     EXPORT_M3U8:                { 'default': 'False',                   'type': bool,   'arg': ('-e, --export-m3u8'                      ,) },
     LIKED_SONGS_ARCHIVE_M3U8:   { 'default': 'True',                    'type': bool,   'arg': ('--liked-songs-archive-m3u8'             ,) },
     ROOT_PODCAST_PATH:          { 'default': '~/Music/Zotify Podcasts', 'type': str,    'arg': ('-rpp', '--root-podcast-path'            ,) },
+    MAX_FILENAME_LENGTH:        { 'default': '0',                       'type': int,    'arg': ('--max-filename-length'                  ,) },
     TEMP_DOWNLOAD_DIR:          { 'default': '',                        'type': str,    'arg': ('-td', '--temp-download-dir'             ,) },
     DOWNLOAD_FORMAT:            { 'default': 'copy',                    'type': str,    'arg': ('--codec', '--download-format'           ,) },
     DOWNLOAD_QUALITY:           { 'default': 'auto',                    'type': str,    'arg': ('-q', '--download-quality'               ,) },
@@ -410,3 +411,7 @@ class Config:
     @classmethod
     def get_album_art_jpg_file(cls) -> bool:
         return cls.get(ALBUM_ART_JPG_FILE)
+    
+    @classmethod
+    def get_max_filename_length(cls) -> int:
+        return cls.get(MAX_FILENAME_LENGTH)
