@@ -32,6 +32,7 @@ MD_DISC_TRACK_TOTALS = "MD_DISC_TRACK_TOTALS"
 MD_SAVE_GENRES = 'MD_SAVE_GENRES'
 MD_ALLGENRES = 'MD_ALLGENRES'
 MD_GENREDELIMITER = 'MD_GENREDELIMITER'
+MD_ARTISTDELIMITER = 'MD_ARTISTDELIMITER'
 PRINT_PROGRESS_INFO = 'PRINT_PROGRESS_INFO'
 PRINT_WARNINGS = 'PRINT_WARNINGS'
 RETRY_ATTEMPTS = 'RETRY_ATTEMPTS'
@@ -91,7 +92,8 @@ CONFIG_VALUES = {
     MD_DISC_TRACK_TOTALS:       { 'default': 'True',                    'type': bool,   'arg': ('--md-disc-track-totals'                 ,) },
     MD_SAVE_GENRES:             { 'default': 'False',                   'type': bool,   'arg': ('--md-save-genres'                       ,) },
     MD_ALLGENRES:               { 'default': 'False',                   'type': bool,   'arg': ('--md-allgenres'                         ,) },
-    MD_GENREDELIMITER:          { 'default': ',',                       'type': str,    'arg': ('--md-genredelimiter'                    ,) },
+    MD_GENREDELIMITER:          { 'default': ', ',                      'type': str,    'arg': ('--md-genredelimiter'                    ,) },
+    MD_ARTISTDELIMITER:         { 'default': ', ',                      'type': str,    'arg': ('--md-artistdelimiter'                   ,) },
     SKIP_EXISTING:              { 'default': 'True',                    'type': bool,   'arg': ('-ie', '--skip-existing'                 ,) },
     SKIP_PREVIOUSLY_DOWNLOADED: { 'default': 'False',                   'type': bool,   'arg': ('-ip', '--skip-previously-downloaded'    ,) },
     RETRY_ATTEMPTS:             { 'default': '1',                       'type': int,    'arg': ('--retry-attempts'                       ,) },
@@ -326,6 +328,10 @@ class Config:
     @classmethod
     def get_all_genres_delimiter(cls) -> bool:
         return cls.get(MD_GENREDELIMITER)
+    
+    @classmethod
+    def get_artist_delimiter(cls) -> bool:
+        return cls.get(MD_ARTISTDELIMITER)
     
     @classmethod
     def get_output(cls, mode: str) -> str:
