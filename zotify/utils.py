@@ -339,17 +339,17 @@ def fix_filename(name):
 
 def fmt_seconds(secs: float) -> str:
     val = math.floor(secs)
-
+    
     s = math.floor(val % 60)
     val -= s
     val /= 60
-
+    
     m = math.floor(val % 60)
     val -= m
     val /= 60
-
+    
     h = math.floor(val)
-
+    
     if h == 0 and m == 0 and s == 0:
         return "0s"
     elif h == 0 and m == 0:
@@ -358,3 +358,7 @@ def fmt_seconds(secs: float) -> str:
         return f'{m}'.zfill(2) + ':' + f'{s}'.zfill(2)
     else:
         return f'{h}'.zfill(2) + ':' + f'{m}'.zfill(2) + ':' + f'{s}'.zfill(2)
+
+
+def strptime_utc(dtstr):
+        return datetime.datetime.strptime(dtstr[:-1], '%Y-%m-%dT%H:%M:%S').replace(tzinfo=datetime.timezone.utc)
