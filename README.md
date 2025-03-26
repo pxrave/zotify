@@ -75,6 +75,7 @@ Set arguments in the commandline like this: `-sc False` or `--codec mp3`. Wrap a
 | `OUTPUT_LIKED_SONGS`         | `-ol`, `--output-liked-songs`            | `Liked Songs/{artist}_{song_name}`               | Output file pattern for user's Liked Songs         |
 | `OUTPUT_SINGLE`              | `-os`, `--output-single`                 | `{artist}/{album}/{artist} - {song_name}`        | Output file pattern for single tracks              |
 | `OUTPUT_ALBUM`               | `-oa`, `--output-album`                  | `{album_artist}/{album}/{album_num} - {artist} - {song_name}` | Output file pattern for albums        |
+| `MAX_FILENAME_LENGTH`        | `--max-filename-length`                  | 0         | Maximum character length of filenames, truncated to fit, 0 meaning no limit               |
 | `EXPORT_M3U8`                | `-e`, `--export-m3u8`                    | False                     | Export tracks/albums/episodes/playlists with an accompanying .m3u8 file   |
 | `LIKED_SONGS_ARCHIVE_M3U8`   | `--liked-songs-archive-m3u8`             | True                      | Use cumulative/archiving method when exporting .m3u8 file for Liked Songs |
 | `ROOT_PODCAST_PATH`          | `-rpp`, `--root-podcast-path`            | `~/Music/Zotify Podcasts` | Directory where Zotify saves podcasts                                     |
@@ -85,7 +86,6 @@ Set arguments in the commandline like this: `-sc False` or `--codec mp3`. Wrap a
 | `ALBUM_ART_JPG_FILE`         | `--album-art-jpg-file`                   | False     | Save album art as a separate .jpg file                                                    |
 | `SONG_ARCHIVE_LOCATION`      | `--song-archive-location`                |           | Directory where Zotify saves the global song_archive file                                 |
 | `DISABLE_DIRECTORY_ARCHIVES` | `--disable-directory-archives`           | False     | Disable local song_archive in download directories                                        |
-| `MAX_FILENAME_LENGTH`        | `--max-filename-length`                  | 0         | Maximum character length of filenames, truncated to fit, 0 meaning no limit               |
 | `SPLIT_ALBUM_DISCS`          | `--split-album-discs`                    | False     | Saves each disk in its own folder                                                         |
 | `DOWNLOAD_LYRICS`            | `--download-lyrics`                      | True      | Downloads synced lyrics in .lrc format, uses unsynced as fallback                         |
 | `LYRICS_LOCATION`            | `--lyrics-location`                      |           | Directory where Zotify saves lyrics files (default is output directory)                   |
