@@ -16,6 +16,8 @@ TOTALDISCS = 'totaldiscs'
 
 YEAR = 'year'
 
+LYRICS = 'lyrics'
+
 ALBUM = 'album'
 
 TRACKTITLE = 'tracktitle'

@@ -93,6 +93,7 @@ Set arguments in the commandline like this: `-sc False` or `--codec mp3`. Wrap a
 | `MD_ALLGENRES`               | `--md-allgenres`                         | False     | Save all relevant genres in metadata                                                      |
 | `MD_GENREDELIMITER`          | `--md-genredelimiter`                    | ,         | Delimiter character used to split genres in metadata                                      |
 | `MD_ARTISTDELIMITER`         | `--md-artistdelimiter`                   | ,         | Delimiter character used to split artists in metadata                                     |
+| `MD_SAVE_LYRICS`             | `--md-save-lyrics`                       | True      | Whether lyrics should be saved in metadata, requires `--download-lyrics` be True          |
 | `SKIP_EXISTING_FILES`        | `-ie`, `--skip-existing`                 | True      | Skip songs with the same name                                                             |
 | `SKIP_PREVIOUSLY_DOWNLOADED` | `-ip`, `--skip-previously-downloaded`    | False     | Use the global song_archive file to skip previously downloaded songs                      |
 | `RETRY_ATTEMPTS`             | `--retry-attempts`                       | 1         | Number of times Zotify will retry a failed request                                        |

@@ -106,27 +106,29 @@ def get_song_genres(rawartists: List[str], track_name: str) -> List[str]:
         return ['']
 
 
-def get_song_lyrics(song_id: str, file_save: str) -> None:
-    raw, lyrics = Zotify.invoke_url(f'https://spclient.wg.spot' + 'ify.com/color-lyrics/v2/track/{song_id}')
-    if lyrics:
+def get_song_lyrics(song_id: str, file_save: str) -> str:
+    raw, lyrics_dict = Zotify.invoke_url(f'https://spclient.wg.spot' + 'ify.com/color-lyrics/v2/track/{song_id}')
+    if lyrics_dict:
         try:
-            formatted_lyrics = lyrics['lyrics']['lines']
+            formatted_lyrics = lyrics_dict['lyrics']['lines']
         except KeyError:
             raise ValueError(f'Failed to fetch lyrics: {song_id}')
-        if(lyrics['lyrics']['syncType'] == "UNSYNCED"):
-            with open(file_save, 'w', encoding='utf-8') as file:
-                for line in formatted_lyrics:
-                    file.writelines(line['words'] + '\n')
-            return
-        elif(lyrics['lyrics']['syncType'] == "LINE_SYNCED"):
-            with open(file_save, 'w', encoding='utf-8') as file:
-                for line in formatted_lyrics:
-                    timestamp = int(line['startTimeMs'])
-                    ts_minutes = str(math.floor(timestamp / 60000)).zfill(2)
-                    ts_seconds = str(math.floor((timestamp % 60000) / 1000)).zfill(2)
-                    ts_millis = str(math.floor(timestamp % 1000))[:2].zfill(2)
-                    file.writelines(f'[{ts_minutes}:{ts_seconds}.{ts_millis}]' + line['words'] + '\n')
-            return
+        
+        if(lyrics_dict['lyrics']['syncType'] == "UNSYNCED"):
+            lyrics = [line['words'] + '\n' for line in formatted_lyrics]
+        elif(lyrics_dict['lyrics']['syncType'] == "LINE_SYNCED"):
+            lyrics = []
+            for line in formatted_lyrics:
+                timestamp = int(line['startTimeMs'])
+                ts_minutes = str(math.floor(timestamp / 60000)).zfill(2)
+                ts_seconds = str(math.floor((timestamp % 60000) / 1000)).zfill(2)
+                ts_millis = str(math.floor(timestamp % 1000))[:2].zfill(2)
+                lyrics.append(f'[{ts_minutes}:{ts_seconds}.{ts_millis}]' + line['words'] + '\n')
+        
+        with open(file_save, 'w', encoding='utf-8') as file:
+            file.writelines(lyrics)
+        return "".join(lyrics)
+        
     raise ValueError(f'Failed to fetch lyrics: {song_id}')
 
 
@@ -280,12 +282,13 @@ def download_track(mode: str, track_id: str, extra_keys=None, wrapper_p_bars: li
                     
                     genres = get_song_genres(raw_artists, name)
                     
+                    lyrics = None
                     if Zotify.CONFIG.get_download_lyrics():
                         try:
                             lyricdir = filedir
                             if Zotify.CONFIG.get_lyrics_location() is not None:
                                 lyricdir = Zotify.CONFIG.get_lyrics_location()
-                            get_song_lyrics(track_id, lyricdir.joinpath(f"{song_name}.lrc"))
+                            lyrics = get_song_lyrics(track_id, lyricdir.joinpath(f"{song_name}.lrc"))
                         except ValueError:
                             Printer.print(PrintChannel.SKIPS, "\n")
                             Printer.print(PrintChannel.SKIPS, f'###   SKIPPING: LYRICS FOR "{song_name}" (LYRICS NOT AVAILABLE)   ###')
@@ -296,7 +299,7 @@ def download_track(mode: str, track_id: str, extra_keys=None, wrapper_p_bars: li
                     
                     try:
                         set_audio_tags(filename_temp, artists, genres, name, album_name, album_artist, release_year, 
-                                       disc_number, track_number, total_tracks, total_discs)
+                                       disc_number, track_number, total_tracks, total_discs, lyrics)
                         set_music_thumbnail(filename_temp, image_url, mode)
                     except Exception:
                         Printer.print(PrintChannel.ERRORS, "\n")

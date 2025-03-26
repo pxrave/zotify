@@ -11,7 +11,7 @@ import music_tag
 import requests
 
 from zotify.const import ARTIST, GENRE, TRACKTITLE, ALBUM, YEAR, DISCNUMBER, TRACKNUMBER, ARTWORK, \
-    WINDOWS_SYSTEM, ALBUMARTIST, TOTALTRACKS, TOTALDISCS, EXT_MAP
+    WINDOWS_SYSTEM, ALBUMARTIST, TOTALTRACKS, TOTALDISCS, EXT_MAP, LYRICS
 from zotify.zotify import Zotify
 
 
@@ -165,7 +165,7 @@ def clear() -> None:
         os.system('clear')
 
 
-def set_audio_tags(filename, artists, genres, name, album_name, album_artist, release_year, disc_number, track_number, total_tracks, total_discs) -> None:
+def set_audio_tags(filename, artists, genres, name, album_name, album_artist, release_year, disc_number, track_number, total_tracks, total_discs, lyrics: str | None) -> None:
     """ sets music_tag metadata """
     tags = music_tag.load_file(filename)
     tags[ALBUMARTIST] = album_artist
@@ -188,6 +188,9 @@ def set_audio_tags(filename, artists, genres, name, album_name, album_artist, re
         # this method bypasses all internal formatting, probably not resilient against arbitrary inputs
         tags.set_raw("mp3", "TPOS", str(disc_number))
         tags.set_raw("mp3", "TRCK", str(track_number))
+    
+    if lyrics and Zotify.CONFIG.get_save_lyrics_tags():
+        tags[LYRICS] = lyrics
     
     tags.save()
 
