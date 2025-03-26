@@ -25,10 +25,6 @@ def main():
                         type=str,
                         dest='username',
                         help='Account username')
-    parser.add_argument('--password',
-                        type=str,
-                        dest='password',
-                        help='Account password')
     parser.add_argument('--token',
                         type=str,
                         dest='token',

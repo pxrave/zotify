@@ -107,7 +107,7 @@ def get_song_genres(rawartists: List[str], track_name: str) -> List[str]:
 
 
 def get_song_lyrics(song_id: str, file_save: str) -> None:
-    raw, lyrics = Zotify.invoke_url(f'https://spclient.wg.spotify.com/color-lyrics/v2/track/{song_id}')
+    raw, lyrics = Zotify.invoke_url(f'https://spclient.wg.spot' + 'ify.com/color-lyrics/v2/track/{song_id}')
     if lyrics:
         try:
             formatted_lyrics = lyrics['lyrics']['lines']
@@ -283,8 +283,8 @@ def download_track(mode: str, track_id: str, extra_keys=None, wrapper_p_bars: li
                     if Zotify.CONFIG.get_download_lyrics():
                         try:
                             lyricdir = filedir
-                            if Zotify.CONFIG.get_lyrics_location() != '':
-                                lyricdir = PurePath(Zotify.CONFIG.get_lyrics_location())
+                            if Zotify.CONFIG.get_lyrics_location() is not None:
+                                lyricdir = Zotify.CONFIG.get_lyrics_location()
                             get_song_lyrics(track_id, lyricdir.joinpath(f"{song_name}.lrc"))
                         except ValueError:
                             Printer.print(PrintChannel.SKIPS, "\n")

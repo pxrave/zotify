@@ -67,17 +67,9 @@ class Zotify:
         }
     
     @classmethod
-    def get_auth_header_and_params(cls, limit, offset):
-        return {
-            'Authorization': f'Bearer {cls.__get_auth_token()}',
-            'Accept-Language': f'{cls.CONFIG.get_language()}',
-            'Accept': 'application/json',
-            'app-platform': 'WebPlayer'
-        }, {LIMIT: limit, OFFSET: offset}
-    
-    @classmethod
     def invoke_url_with_params(cls, url, limit, offset, **kwargs):
-        headers, params = cls.get_auth_header_and_params(limit=limit, offset=offset)
+        headers = cls.get_auth_header()
+        params = {LIMIT: limit, OFFSET: offset}
         params.update(kwargs)
         return requests.get(url, headers=headers, params=params).json()
     

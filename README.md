@@ -48,7 +48,6 @@ If an artist's URL is given, all albums by the specified artist will be download
 | `-h`, `--help`                | See this message                                                                       |
 | `-c`, `--config-location`     | Specify a directory containing a Zotify `config.json` file to load settings            |
 | `-u`, `--username`            | Account username                                                                       |
-| `--password`                  | Account password                                                                       |
 | `--token`                     | Authentication token                                                                   |
 
 | Command Line Flag (exclusive) | Function                                                                               |
@@ -186,7 +185,7 @@ The value is relative to the `ROOT_PATH` directory and may contain the following
 
 ## What do I do if I see "Your session has been terminated"?
 
-If you see this, don't worry! Just try logging back in. If you see the incorrect username or password error, reset your password and you should be able to log back in.
+If you see this, don't worry! Just try logging back in. If you see the incorrect username or token error, delete your `credentials.json` and you should be able to log back in.
 
 ## Will my account get banned if I use this tool?
 

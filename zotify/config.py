@@ -262,7 +262,7 @@ class Config:
         return cls.get(TRANSCODE_BITRATE)
     
     @classmethod
-    def get_song_archive(cls) -> PurePath:
+    def get_song_archive_location(cls) -> PurePath:
         if cls.get(SONG_ARCHIVE_LOCATION) == '':
             system_paths = {
                 'win32': Path.home() / 'AppData/Roaming/Zotify',
@@ -274,7 +274,7 @@ class Config:
             else:
                 song_archive = PurePath(system_paths[sys.platform] / '.song_archive')
         else:
-            song_archive_path:str = cls.get(SONG_ARCHIVE_LOCATION)
+            song_archive_path: str = cls.get(SONG_ARCHIVE_LOCATION)
             if song_archive_path[0] == ".":
                 song_archive_path = cls.get_root_path() / song_archive_path[1:]
             song_archive = PurePath(Path(song_archive_path).expanduser() / ".song_archive")
@@ -366,12 +366,13 @@ class Config:
         return cls.get(DISABLE_DIRECTORY_ARCHIVES)
     
     @classmethod
-    def get_lyrics_location(cls) -> str | PurePath:
+    def get_lyrics_location(cls) -> PurePath | None:
         if cls.get(LYRICS_LOCATION) == '':
-            return ''
-        lyrics_path:str = cls.get(LYRICS_LOCATION)
+            return None
+        lyrics_path: str = cls.get(LYRICS_LOCATION)
         if lyrics_path[0] == ".":
             lyrics_path = cls.get_root_path() / lyrics_path[1:]
+        Path(lyrics_path.parent).mkdir(parents=True, exist_ok=True)
         return PurePath(Path(lyrics_path).expanduser())
     
     @classmethod
