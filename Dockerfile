@@ -1,8 +1,8 @@
-FROM python:3.9-alpine as base
+FROM python:3.9-alpine AS base
 
 RUN apk --update add ffmpeg
 
-FROM base as builder
+FROM base AS builder
 
 WORKDIR /install
 COPY requirements.txt /requirements.txt
