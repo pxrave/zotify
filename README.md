@@ -60,7 +60,7 @@ If an artist's URL is given, all albums by the specified artist will be download
 
 ## Advanced Options
 
-All these options can either be configured in the config or via the commandline, in case of both the commandline-option has higher priority.  
+All options can be set via the commandline or in a config.json file. Commandline arguments take priority over config.json arguments.  
 Set arguments in the commandline like this: `-ie False` or `--codec mp3`. Wrap commandline arguments containing spaces or non-alphanumeric characters (weird symbols) with quotes like this: `--output-liked-songs "Liked Songs/{song_name}"`
 
 | Config Key                   | Command Line Flag                     | Default Value           | Description                                                                   |
