@@ -9,7 +9,7 @@ import ffmpy
 
 from zotify.const import TRACKS, ALBUM, GENRES, NAME, ITEMS, DISC_NUMBER, TRACK_NUMBER, TOTAL_TRACKS, IS_PLAYABLE, ARTISTS, IMAGES, URL, \
     RELEASE_DATE, ID, TRACKS_URL, FOLLOWED_ARTISTS_URL, SAVED_TRACKS_URL, TRACK_STATS_URL, CODEC_MAP, EXT_MAP, DURATION_MS, \
-    HREF, ARTISTS, WIDTH
+    HREF, ARTISTS, WIDTH, COMPILATION, ALBUM_TYPE
 from zotify.config import EXPORT_M3U8
 from zotify.termoutput import Printer, PrintChannel
 from zotify.utils import fix_filename, set_audio_tags, set_music_thumbnail, create_download_directory, add_to_m3u8, fetch_m3u8_songs, \
@@ -46,21 +46,23 @@ def get_followed_artists() -> list:
     return artists
 
 
-def get_song_info(song_id) -> Tuple[List[str], List[Any], str, str, Any, Any, Any, Any, Any, Any, Any, int]:
+def get_song_info(song_id) -> Tuple[List[str], List[Any], str, str, Any, Any, Any, Any, Any, Any, Any, Any, Any, int]:
     """ Retrieves metadata for downloaded songs """
     with Loader(PrintChannel.PROGRESS_INFO, "Fetching track information..."):
         (raw, info) = Zotify.invoke_url(f'{TRACKS_URL}?ids={song_id}&market=from_token')
-
+    
     if not TRACKS in info:
         raise ValueError(f'Invalid response from TRACKS_URL:\n{raw}')
-
+    
     try:
+        print("\n", info[TRACKS][0])
         artists = []
         for data in info[TRACKS][0][ARTISTS]:
             artists.append(data[NAME])
-
+        
         album_name = info[TRACKS][0][ALBUM][NAME]
         album_artist = info[TRACKS][0][ALBUM][ARTISTS][0][NAME]
+        album_compilation = 1 if COMPILATION in info[TRACKS][0][ALBUM][ALBUM_TYPE] else 0
         name = info[TRACKS][0][NAME]
         release_year = info[TRACKS][0][ALBUM][RELEASE_DATE].split('-')[0]
         disc_number = info[TRACKS][0][DISC_NUMBER]
@@ -69,14 +71,14 @@ def get_song_info(song_id) -> Tuple[List[str], List[Any], str, str, Any, Any, An
         scraped_song_id = info[TRACKS][0][ID]
         is_playable = info[TRACKS][0][IS_PLAYABLE]
         duration_ms = info[TRACKS][0][DURATION_MS]
-
+        
         image = info[TRACKS][0][ALBUM][IMAGES][0]
         for i in info[TRACKS][0][ALBUM][IMAGES]:
             if i[WIDTH] > image[WIDTH]:
                 image = i
         image_url = image[URL]
-
-        return artists, info[TRACKS][0][ARTISTS], album_name, album_artist, name, image_url, release_year, disc_number, track_number, total_tracks, scraped_song_id, is_playable, duration_ms
+        
+        return artists, info[TRACKS][0][ARTISTS], album_name, album_artist, name, image_url, release_year, disc_number, track_number, total_tracks, album_compilation, scraped_song_id, is_playable, duration_ms
     except Exception as e:
         raise ValueError(f'Failed to parse TRACKS_URL response: {str(e)}\n{raw}')
 
@@ -171,7 +173,7 @@ def download_track(mode: str, track_id: str, extra_keys=None, wrapper_p_bars: li
         output_template = Zotify.CONFIG.get_output(mode)
         
         (artists, raw_artists, album_name, album_artist, name, image_url, release_year, disc_number,
-         track_number, total_tracks, scraped_song_id, is_playable, duration_ms) = get_song_info(track_id)
+         track_number, total_tracks, compilation, scraped_song_id, is_playable, duration_ms) = get_song_info(track_id)
         total_discs = None
         if "total_discs" in extra_keys:
             total_discs = extra_keys["total_discs"]
@@ -305,7 +307,7 @@ def download_track(mode: str, track_id: str, extra_keys=None, wrapper_p_bars: li
                     
                     try:
                         set_audio_tags(filename_temp, artists, genres, name, album_name, album_artist, release_year, 
-                                       disc_number, track_number, total_tracks, total_discs, lyrics)
+                                       disc_number, track_number, total_tracks, total_discs, compilation, lyrics)
                         set_music_thumbnail(filename_temp, image_url, mode)
                     except Exception:
                         Printer.print(PrintChannel.ERRORS, "\n")

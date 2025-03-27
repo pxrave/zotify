@@ -18,6 +18,8 @@ YEAR = 'year'
 
 LYRICS = 'lyrics'
 
+COMPILATION = "compilation"
+
 ALBUM = 'album'
 
 TRACKTITLE = 'tracktitle'
@@ -67,6 +69,8 @@ TRACK_NUMBER = 'track_number'
 TOTAL_TRACKS = "total_tracks"
 
 DISC_NUMBER = 'disc_number'
+
+ALBUM_TYPE = 'album_type'
 
 SHOW = 'show'
 

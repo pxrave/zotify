@@ -11,7 +11,7 @@ import music_tag
 import requests
 
 from zotify.const import ARTIST, GENRE, TRACKTITLE, ALBUM, YEAR, DISCNUMBER, TRACKNUMBER, ARTWORK, \
-    WINDOWS_SYSTEM, ALBUMARTIST, TOTALTRACKS, TOTALDISCS, EXT_MAP, LYRICS
+    WINDOWS_SYSTEM, ALBUMARTIST, TOTALTRACKS, TOTALDISCS, EXT_MAP, LYRICS, COMPILATION
 from zotify.zotify import Zotify
 
 
@@ -165,7 +165,7 @@ def clear() -> None:
         os.system('clear')
 
 
-def set_audio_tags(filename, artists, genres, name, album_name, album_artist, release_year, disc_number, track_number, total_tracks, total_discs, lyrics: List[str] | None) -> None:
+def set_audio_tags(filename, artists, genres, name, album_name, album_artist, release_year, disc_number, track_number, total_tracks, total_discs, compilation: int, lyrics: List[str] | None) -> None:
     """ sets music_tag metadata """
     tags = music_tag.load_file(filename)
     tags[ALBUMARTIST] = album_artist
@@ -176,6 +176,9 @@ def set_audio_tags(filename, artists, genres, name, album_name, album_artist, re
     tags[YEAR] = release_year
     tags[DISCNUMBER] = disc_number
     tags[TRACKNUMBER] = track_number
+    
+    if compilation:
+        tags[COMPILATION] = compilation
     
     if Zotify.CONFIG.get_disc_track_totals():
         tags[TOTALTRACKS] = total_tracks
