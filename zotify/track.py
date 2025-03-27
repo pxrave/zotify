@@ -305,7 +305,7 @@ def download_track(mode: str, track_id: str, extra_keys=None, wrapper_p_bars: li
                     
                     try:
                         set_audio_tags(filename_temp, artists, genres, name, album_name, album_artist, release_year, 
-                                       disc_number, track_number, total_tracks, total_discs, "".join(lyrics))
+                                       disc_number, track_number, total_tracks, total_discs, lyrics)
                         set_music_thumbnail(filename_temp, image_url, mode)
                     except Exception:
                         Printer.print(PrintChannel.ERRORS, "\n")

@@ -165,7 +165,7 @@ def clear() -> None:
         os.system('clear')
 
 
-def set_audio_tags(filename, artists, genres, name, album_name, album_artist, release_year, disc_number, track_number, total_tracks, total_discs, lyrics: str | None) -> None:
+def set_audio_tags(filename, artists, genres, name, album_name, album_artist, release_year, disc_number, track_number, total_tracks, total_discs, lyrics: List[str] | None) -> None:
     """ sets music_tag metadata """
     tags = music_tag.load_file(filename)
     tags[ALBUMARTIST] = album_artist
@@ -190,7 +190,7 @@ def set_audio_tags(filename, artists, genres, name, album_name, album_artist, re
         tags.set_raw("mp3", "TRCK", str(track_number))
     
     if lyrics and Zotify.CONFIG.get_save_lyrics_tags():
-        tags[LYRICS] = lyrics
+        tags[LYRICS] = "".join(lyrics)
     
     tags.save()
 
