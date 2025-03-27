@@ -106,8 +106,8 @@ def get_song_genres(rawartists: List[str], track_name: str) -> List[str]:
         return ['']
 
 
-def get_song_lyrics(song_id: str, file_save: str) -> str:
-    raw, lyrics_dict = Zotify.invoke_url(f'https://spclient.wg.spot' + 'ify.com/color-lyrics/v2/track/{song_id}')
+def get_song_lyrics(song_id: str) -> List[str]:
+    raw, lyrics_dict = Zotify.invoke_url('https://spclient.wg.spot' + f'ify.com/color-lyrics/v2/track/{song_id}')
     if lyrics_dict:
         try:
             formatted_lyrics = lyrics_dict['lyrics']['lines']
@@ -124,11 +124,7 @@ def get_song_lyrics(song_id: str, file_save: str) -> str:
                 ts_seconds = str(math.floor((timestamp % 60000) / 1000)).zfill(2)
                 ts_millis = str(math.floor(timestamp % 1000))[:2].zfill(2)
                 lyrics.append(f'[{ts_minutes}:{ts_seconds}.{ts_millis}]' + line['words'] + '\n')
-        
-        with open(file_save, 'w', encoding='utf-8') as file:
-            file.writelines(lyrics)
-        return "".join(lyrics)
-        
+        return lyrics
     raise ValueError(f'Failed to fetch lyrics: {song_id}')
 
 
@@ -143,6 +139,22 @@ def get_song_duration(song_id: str) -> float:
     duration = float(ms_duration)/1000
 
     return duration
+
+
+def handle_lyrics(track_id: str, song_name: str, filedir: PurePath) -> List[str] | None:
+    lyrics = None
+    try:
+        lyricdir = Zotify.CONFIG.get_lyrics_location()
+        if lyricdir is None:
+            lyricdir = filedir
+        lyrics = get_song_lyrics(track_id)
+        with open(lyricdir / f"{song_name}.lrc", 'w', encoding='utf-8') as file:
+            file.writelines(lyrics)
+    except ValueError:
+        Printer.print(PrintChannel.SKIPS, "\n")
+        Printer.print(PrintChannel.SKIPS, f'###   SKIPPING: LYRICS FOR "{song_name}" (LYRICS NOT AVAILABLE)   ###')
+        Printer.print(PrintChannel.SKIPS, "\n")
+    return lyrics
 
 
 def download_track(mode: str, track_id: str, extra_keys=None, wrapper_p_bars: list | None = None) -> None:
@@ -213,6 +225,9 @@ def download_track(mode: str, track_id: str, extra_keys=None, wrapper_p_bars: li
                     Path(filedir / (Zotify.datetime_launch + "_zotify.m3u8")).replace(m3u_path)
                     with open(m3u_path, 'a', encoding='utf-8') as file:
                         file.writelines(songs_m3u[3:])
+        
+        if Zotify.CONFIG.get_download_lyrics() and Zotify.CONFIG.get_always_check_lyrics():
+            lyrics = handle_lyrics(track_id, song_name, filedir)
     
     except Exception as e:
         prepare_download_loader.stop()
@@ -282,24 +297,15 @@ def download_track(mode: str, track_id: str, extra_keys=None, wrapper_p_bars: li
                     
                     genres = get_song_genres(raw_artists, name)
                     
-                    lyrics = None
-                    if Zotify.CONFIG.get_download_lyrics():
-                        try:
-                            lyricdir = filedir
-                            if Zotify.CONFIG.get_lyrics_location() is not None:
-                                lyricdir = Zotify.CONFIG.get_lyrics_location()
-                            lyrics = get_song_lyrics(track_id, lyricdir.joinpath(f"{song_name}.lrc"))
-                        except ValueError:
-                            Printer.print(PrintChannel.SKIPS, "\n")
-                            Printer.print(PrintChannel.SKIPS, f'###   SKIPPING: LYRICS FOR "{song_name}" (LYRICS NOT AVAILABLE)   ###')
-                            Printer.print(PrintChannel.SKIPS, "\n")
+                    if Zotify.CONFIG.get_download_lyrics() and not Zotify.CONFIG.get_always_check_lyrics():
+                        lyrics = handle_lyrics(track_id, song_name, filedir)
                     
                     # no metadata is written to track prior to conversion
                     convert_audio_format(filename_temp)
                     
                     try:
                         set_audio_tags(filename_temp, artists, genres, name, album_name, album_artist, release_year, 
-                                       disc_number, track_number, total_tracks, total_discs, lyrics)
+                                       disc_number, track_number, total_tracks, total_discs, "".join(lyrics))
                         set_music_thumbnail(filename_temp, image_url, mode)
                     except Exception:
                         Printer.print(PrintChannel.ERRORS, "\n")
@@ -326,6 +332,8 @@ def download_track(mode: str, track_id: str, extra_keys=None, wrapper_p_bars: li
 
                     if Zotify.CONFIG.get_bulk_wait_time():
                         time.sleep(Zotify.CONFIG.get_bulk_wait_time())
+            
+            
             
         except Exception as e:
             Printer.print(PrintChannel.ERRORS, f'###   SKIPPING: {song_name} (GENERAL DOWNLOAD ERROR) - Track_ID: {str(track_id)}   ###')

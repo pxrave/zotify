@@ -55,6 +55,7 @@ EXPORT_M3U8 = 'EXPORT_M3U8'
 LIKED_SONGS_ARCHIVE_M3U8 = 'LIKED_SONGS_ARCHIVE_M3U8'
 ALBUM_ART_JPG_FILE = 'ALBUM_ART_JPG_FILE'
 MAX_FILENAME_LENGTH = 'MAX_FILENAME_LENGTH'
+ALWAYS_CHECK_LYRICS = 'ALWAYS_CHECK_LYRICS'
 
 
 CONFIG_VALUES = {
@@ -91,6 +92,7 @@ CONFIG_VALUES = {
     SPLIT_ALBUM_DISCS:          { 'default': 'False',                   'type': bool,   'arg': ('--split-album-discs'                    ,) },
     DOWNLOAD_LYRICS:            { 'default': 'True',                    'type': bool,   'arg': ('--download-lyrics'                      ,) },
     LYRICS_LOCATION:            { 'default': '',                        'type': str,    'arg': ('--lyrics-location'                      ,) },
+    ALWAYS_CHECK_LYRICS:        { 'default': 'False',                   'type': bool,   'arg': ('--always-check-lyrics'                  ,) },
     MD_DISC_TRACK_TOTALS:       { 'default': 'True',                    'type': bool,   'arg': ('--md-disc-track-totals'                 ,) },
     MD_SAVE_GENRES:             { 'default': 'False',                   'type': bool,   'arg': ('--md-save-genres'                       ,) },
     MD_ALLGENRES:               { 'default': 'False',                   'type': bool,   'arg': ('--md-allgenres'                         ,) },
@@ -123,7 +125,7 @@ CONFIG_VALUES = {
 
 class Config:
     Values = {}
-
+    
     @classmethod
     def load(cls, args) -> None:
         system_paths = {
@@ -210,7 +212,7 @@ class Config:
         else:
             root_podcast_path:str = cls.get(ROOT_PODCAST_PATH)
             if root_podcast_path[0] == ".":
-                root_podcast_path = cls.get_root_path() / root_podcast_path[1:]
+                root_podcast_path = cls.get_root_path() / PurePath(root_podcast_path).relative_to(".")
             root_podcast_path = PurePath(Path(root_podcast_path).expanduser())
         Path(root_podcast_path).mkdir(parents=True, exist_ok=True)
         return root_podcast_path
@@ -278,7 +280,7 @@ class Config:
         else:
             song_archive_path: str = cls.get(SONG_ARCHIVE_LOCATION)
             if song_archive_path[0] == ".":
-                song_archive_path = cls.get_root_path() / song_archive_path[1:]
+                song_archive_path = cls.get_root_path() / PurePath(song_archive_path).relative_to(".")
             song_archive = PurePath(Path(song_archive_path).expanduser() / ".song_archive")
         Path(song_archive.parent).mkdir(parents=True, exist_ok=True)
         return song_archive
@@ -300,9 +302,9 @@ class Config:
             else:
                 credentials = PurePath(system_paths[sys.platform] / 'credentials.json')
         else:
-            credentials_path:str = cls.get(CREDENTIALS_LOCATION)
+            credentials_path: str = cls.get(CREDENTIALS_LOCATION)
             if credentials_path[0] == ".":
-                credentials_path = cls.get_root_path() / credentials_path[1:]
+                credentials_path = cls.get_root_path() / PurePath(credentials_path).relative_to(".")
             credentials = PurePath(Path(credentials_path).expanduser() / 'credentials.json')
         Path(credentials.parent).mkdir(parents=True, exist_ok=True)
         return credentials
@@ -313,7 +315,7 @@ class Config:
             return ''
         temp_download_path:str = cls.get(TEMP_DOWNLOAD_DIR)
         if temp_download_path[0] == ".":
-            temp_download_path = cls.get_root_path() / temp_download_path[1:]
+            temp_download_path = cls.get_root_path() / PurePath(temp_download_path).relative_to(".")
         return PurePath(Path(temp_download_path).expanduser())
     
     @classmethod
@@ -368,14 +370,17 @@ class Config:
         return cls.get(DISABLE_DIRECTORY_ARCHIVES)
     
     @classmethod
-    def get_lyrics_location(cls) -> PurePath | None:
+    def get_lyrics_location(cls) -> PurePath:
         if cls.get(LYRICS_LOCATION) == '':
-            return None
-        lyrics_path: str = cls.get(LYRICS_LOCATION)
-        if lyrics_path[0] == ".":
-            lyrics_path = cls.get_root_path() / lyrics_path[1:]
-        Path(lyrics_path.parent).mkdir(parents=True, exist_ok=True)
-        return PurePath(Path(lyrics_path).expanduser())
+            lyrics_path = cls.get_root_path()
+        else:
+            lyrics_path = cls.get(LYRICS_LOCATION)
+            if lyrics_path[0] == ".":
+                lyrics_path = cls.get_root_path() / PurePath(lyrics_path).relative_to(".")
+            lyrics_path = PurePath(Path(lyrics_path).expanduser())
+        
+        Path(lyrics_path).mkdir(parents=True, exist_ok=True)
+        return lyrics_path
     
     @classmethod
     def get_ffmpeg_log_level(cls) -> str:
@@ -429,3 +434,7 @@ class Config:
     @classmethod
     def get_save_lyrics_tags(cls) -> bool:
         return cls.get(MD_SAVE_LYRICS)
+    
+    @classmethod
+    def get_always_check_lyrics(cls) -> bool:
+        return cls.get(ALWAYS_CHECK_LYRICS)
