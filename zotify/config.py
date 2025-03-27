@@ -331,11 +331,11 @@ class Config:
         return cls.get(MD_ALLGENRES)
     
     @classmethod
-    def get_all_genres_delimiter(cls) -> bool:
+    def get_genre_delimiter(cls) -> str:
         return cls.get(MD_GENREDELIMITER)
     
     @classmethod
-    def get_artist_delimiter(cls) -> bool:
+    def get_artist_delimiter(cls) -> str:
         return cls.get(MD_ARTISTDELIMITER)
     
     @classmethod

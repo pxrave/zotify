@@ -92,8 +92,8 @@ Set arguments in the commandline like this: `-ie False` or `--codec mp3`. Wrap c
 | `MD_DISC_TRACK_TOTALS`       | `--md-disc-track-totals`              | True      | Whether track totals and disc totals should be saved in metadata                            |
 | `MD_SAVE_GENRES`             | `--md-save-genres`                    | False     | Whether genres should be saved in metadata                                                  |
 | `MD_ALLGENRES`               | `--md-allgenres`                      | False     | Save all relevant genres in metadata                                                        |
-| `MD_GENREDELIMITER`          | `--md-genredelimiter`                 | ,         | Delimiter character used to split genres in metadata                                        |
-| `MD_ARTISTDELIMITER`         | `--md-artistdelimiter`                | ,         | Delimiter character used to split artists in metadata                                       |
+| `MD_GENREDELIMITER`          | `--md-genredelimiter`                 | `", "`    | Delimiter character used to split genres in metadata, use `""` for array-like tags (M4A)    |
+| `MD_ARTISTDELIMITER`         | `--md-artistdelimiter`                | `", "`    | Delimiter character used to split artists in metadata, use `""` for array-like tags (M4A)   |
 | `MD_SAVE_LYRICS`             | `--md-save-lyrics`                    | True      | Whether lyrics should be saved in metadata, requires `--download-lyrics` be True            |
 | `SKIP_EXISTING_FILES`        | `-ie`, `--skip-existing`              | True      | Skip songs already present in the expected output directory                                 |
 | `SKIP_PREVIOUSLY_DOWNLOADED` | `-ip`, `--skip-previously-downloaded` | False     | Use the global song_archive file to skip previously downloaded songs                        |

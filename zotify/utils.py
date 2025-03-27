@@ -165,12 +165,12 @@ def clear() -> None:
         os.system('clear')
 
 
-def set_audio_tags(filename, artists, genres, name, album_name, album_artist, release_year, disc_number, track_number, total_tracks, total_discs, compilation: int, lyrics: List[str] | None) -> None:
+def set_audio_tags(filename, artists: List[str], genres: List[str], name, album_name, album_artist, release_year, disc_number, track_number, total_tracks, total_discs, compilation: int, lyrics: List[str] | None) -> None:
     """ sets music_tag metadata """
     tags = music_tag.load_file(filename)
     tags[ALBUMARTIST] = album_artist
     tags[ARTIST] = conv_artist_format(artists)
-    tags[GENRE] = genres[0] if not Zotify.CONFIG.get_all_genres() else Zotify.CONFIG.get_all_genres_delimiter().join(genres)
+    tags[GENRE] = conv_genre_format(genres)
     tags[TRACKTITLE] = name
     tags[ALBUM] = album_name
     tags[YEAR] = release_year
@@ -198,9 +198,23 @@ def set_audio_tags(filename, artists, genres, name, album_name, album_artist, re
     tags.save()
 
 
-def conv_artist_format(artists) -> str:
+def conv_artist_format(artists: List[str]) -> List[str] | str:
     """ Returns converted artist format """
-    return Zotify.CONFIG.get_artist_delimiter().join(artists)
+    if Zotify.CONFIG.get_artist_delimiter() == "":
+        return artists
+    else:
+        return Zotify.CONFIG.get_artist_delimiter().join(artists)
+
+
+def conv_genre_format(genres: List[str]) -> List[str] | str:
+    """ Returns converted genre format """
+    if not Zotify.CONFIG.get_all_genres():
+        return genres[0]
+
+    if Zotify.CONFIG.get_genre_delimiter() == "":
+        return genres
+    else:
+        return Zotify.CONFIG.get_genre_delimiter().join(genres)
 
 
 def set_music_thumbnail(filename: PurePath, image_url, mode: str) -> None:
