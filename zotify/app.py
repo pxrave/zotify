@@ -1,3 +1,4 @@
+from argparse import Namespace
 from librespot.audio.decoders import AudioQuality
 from tabulate import tabulate
 from pathlib import Path
@@ -15,7 +16,7 @@ from zotify.zotify import Zotify
 SEARCH_URL = 'https://api.spotify.com/v1/search'
 
 
-def client(args) -> None:
+def client(args: Namespace) -> None:
     """ Connects to download server to perform query's and get songs to download """
     Zotify(args)
     
@@ -45,6 +46,9 @@ def client(args) -> None:
     
     if args.urls:
         if len(args.urls) > 0:
+            if len(args.urls) == 1 and " " in args.urls[0]:
+                args.urls = args.urls[0].split(' ')
+            # Printer.print(PrintChannel.DOWNLOADS, f'###   DOWNLOADING URLS: {args.urls}')
             download_from_urls(args.urls)
         return
     
