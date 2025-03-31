@@ -68,7 +68,7 @@ def add_to_m3u8(mode: str, song_duration: float, song_name: str, song_filename: 
         m3u_path = m3u_dir / (Zotify.datetime_launch + "_zotify.m3u8")
     
     if not Path(m3u_path).exists():
-        with open(m3u_path, 'w', encoding='utf-8') as file:
+        with open(m3u_path, 'x', encoding='utf-8') as file:
             file.write("#EXTM3U\n\n")
     
     song_label_m3u = None
