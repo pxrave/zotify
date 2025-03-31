@@ -148,9 +148,11 @@ def handle_lyrics(track_id: str, song_name: str, filedir: PurePath) -> List[str]
         lyricdir = Zotify.CONFIG.get_lyrics_location()
         if lyricdir is None:
             lyricdir = filedir
+        
         lyrics = get_song_lyrics(track_id)
         with open(lyricdir / f"{song_name}.lrc", 'w', encoding='utf-8') as file:
             file.writelines(lyrics)
+        
     except ValueError:
         Printer.print(PrintChannel.SKIPS, "\n")
         Printer.print(PrintChannel.SKIPS, f'###   SKIPPING: LYRICS FOR "{song_name}" (LYRICS NOT AVAILABLE)   ###')
@@ -219,7 +221,7 @@ def download_track(mode: str, track_id: str, extra_keys=None, wrapper_p_bars: li
             if mode == "liked" and Zotify.CONFIG.get_liked_songs_archive_m3u8():
                 m3u_path = filedir / "Liked Songs.m3u8"
                 songs_m3u = fetch_m3u8_songs(m3u_path)
-            song_label = add_to_m3u8(mode, get_song_duration(track_id), song_name, filename, filedir)
+            song_label = add_to_m3u8(mode, get_song_duration(track_id), song_name, filename)
             if mode == "liked" and Zotify.CONFIG.get_liked_songs_archive_m3u8():
                 if songs_m3u is not None and song_label in songs_m3u[0]:
                     Zotify.CONFIG.Values[EXPORT_M3U8] = False

@@ -76,6 +76,8 @@ Set arguments in the commandline like this: `-ie False` or `--codec mp3`. Wrap c
 | `OUTPUT_ALBUM`               | `-oa`, `--output-album`               | `{album_artist}/{album}/{album_num} - {artist} - {song_name}` | Output file pattern for albums          |
 | `MAX_FILENAME_LENGTH`        | `--max-filename-length`               | 0                         | Maximum character length of filenames, truncated to fit, 0 meaning no limit |
 | `EXPORT_M3U8`                | `-e`, `--export-m3u8`                 | False                     | Export tracks/albums/episodes/playlists with an accompanying .m3u8 file     |
+| `M3U8_LOCATION`              | `--m3u8-location`                     |                           | Directory where Zotify saves .m3u8 files (default is output directory)      |
+| `M3U8_REL_PATHS`             | `--m3u8-relative-paths`               | True                      | List .m3u8 track paths relative to the .m3u8 file's directory               |
 | `LIKED_SONGS_ARCHIVE_M3U8`   | `--liked-songs-archive-m3u8`          | True                      | Use cumulative/archiving method when exporting .m3u8 file for Liked Songs   |
 | `ROOT_PODCAST_PATH`          | `-rpp`, `--root-podcast-path`         | `~/Music/Zotify Podcasts` | Directory where Zotify saves podcasts                                       |
 | `TEMP_DOWNLOAD_DIR`          | `-td`, `--temp-download-dir`          |           | Download tracks to a temporary directory first                                              |

@@ -56,6 +56,8 @@ LIKED_SONGS_ARCHIVE_M3U8 = 'LIKED_SONGS_ARCHIVE_M3U8'
 ALBUM_ART_JPG_FILE = 'ALBUM_ART_JPG_FILE'
 MAX_FILENAME_LENGTH = 'MAX_FILENAME_LENGTH'
 ALWAYS_CHECK_LYRICS = 'ALWAYS_CHECK_LYRICS'
+M3U8_LOCATION = 'M3U8_LOCATION'
+M3U8_REL_PATHS = 'M3U8_REL_PATHS'
 
 
 CONFIG_VALUES = {
@@ -80,6 +82,8 @@ CONFIG_VALUES = {
                                   'arg': ('-oa', '--output-album' ,) },
     MAX_FILENAME_LENGTH:        { 'default': '0',                       'type': int,    'arg': ('--max-filename-length'                  ,) },
     EXPORT_M3U8:                { 'default': 'False',                   'type': bool,   'arg': ('-e, --export-m3u8'                      ,) },
+    M3U8_LOCATION:              { 'default': '',                        'type': str,    'arg': ('--m3u8-location'                        ,) },
+    M3U8_REL_PATHS:             { 'default': 'True',                    'type': bool,   'arg': ('--m3u8-relative-paths'                  ,) },
     LIKED_SONGS_ARCHIVE_M3U8:   { 'default': 'True',                    'type': bool,   'arg': ('--liked-songs-archive-m3u8'             ,) },
     ROOT_PODCAST_PATH:          { 'default': '~/Music/Zotify Podcasts', 'type': str,    'arg': ('-rpp', '--root-podcast-path'            ,) },
     TEMP_DOWNLOAD_DIR:          { 'default': '',                        'type': str,    'arg': ('-td', '--temp-download-dir'             ,) },
@@ -370,9 +374,10 @@ class Config:
         return cls.get(DISABLE_DIRECTORY_ARCHIVES)
     
     @classmethod
-    def get_lyrics_location(cls) -> PurePath:
+    def get_lyrics_location(cls) -> PurePath | None:
         if cls.get(LYRICS_LOCATION) == '':
-            lyrics_path = cls.get_root_path()
+            # Use OUTPUT path as default location
+            return None
         else:
             lyrics_path = cls.get(LYRICS_LOCATION)
             if lyrics_path[0] == ".":
@@ -438,3 +443,22 @@ class Config:
     @classmethod
     def get_always_check_lyrics(cls) -> bool:
         return cls.get(ALWAYS_CHECK_LYRICS)
+    
+    @classmethod
+    def get_m3u8_location(cls) -> PurePath | None:
+        if cls.get(M3U8_LOCATION) == '':
+            # Use OUTPUT path as default location
+            return None
+        else:
+            m3u8_path = cls.get(M3U8_LOCATION)
+            if m3u8_path[0] == ".":
+                m3u8_path = cls.get_root_path() / PurePath(m3u8_path).relative_to(".")
+            m3u8_path = PurePath(Path(m3u8_path).expanduser())
+        
+        Path(m3u8_path).mkdir(parents=True, exist_ok=True)
+        return m3u8_path
+    
+    @classmethod
+    def get_m3u8_relative_paths(cls) -> bool:
+        return cls.get(M3U8_REL_PATHS)
+    
