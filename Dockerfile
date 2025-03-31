@@ -1,4 +1,4 @@
-FROM python:3.9-alpine AS base
+FROM python:3.10-alpine AS base
 
 RUN apk --update add ffmpeg
 
@@ -12,8 +12,8 @@ RUN pip install --prefix="/install" -r /requirements.txt
 
 FROM base
 
-COPY --from=builder /install /usr/local/lib/python3.9/site-packages
-RUN mv /usr/local/lib/python3.9/site-packages/lib/python3.9/site-packages/* /usr/local/lib/python3.9/site-packages/
+COPY --from=builder /install /usr/local/lib/python3.10/site-packages
+RUN mv /usr/local/lib/python3.10/site-packages/lib/python3.10/site-packages/* /usr/local/lib/python3.10/site-packages/
 
 COPY zotify /app/zotify
 

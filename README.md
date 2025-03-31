@@ -25,7 +25,7 @@
 
 ### Dependencies
 
-- Python 3.9 or greater
+- Python 3.10 or greater
 - FFmpeg
 
 ### Command
