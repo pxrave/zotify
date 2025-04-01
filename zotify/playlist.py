@@ -38,7 +38,9 @@ def get_playlist_songs(playlist_id):
         if len(resp[ITEMS]) < limit:
             break
     
-    songs.sort(key=lambda s: strptime_utc(s['added_at']), reverse=True)
+    # filtering by added date inverts playlist order, ruining the .m3u8 file, so skip if exporting m3u8
+    if not Zotify.CONFIG.get_export_m3u8(): 
+        songs.sort(key=lambda s: strptime_utc(s['added_at']), reverse=True)
     
     return songs
 

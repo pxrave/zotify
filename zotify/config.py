@@ -58,6 +58,7 @@ MAX_FILENAME_LENGTH = 'MAX_FILENAME_LENGTH'
 ALWAYS_CHECK_LYRICS = 'ALWAYS_CHECK_LYRICS'
 M3U8_LOCATION = 'M3U8_LOCATION'
 M3U8_REL_PATHS = 'M3U8_REL_PATHS'
+DOWNLOAD_PARENT_ALBUM = 'DOWNLOAD_PARENT_ALBUM'
 
 
 CONFIG_VALUES = {
@@ -105,6 +106,7 @@ CONFIG_VALUES = {
     MD_SAVE_LYRICS:             { 'default': 'True',                    'type': bool,   'arg': ('--md-save-lyrics'                       ,) },
     SKIP_EXISTING:              { 'default': 'True',                    'type': bool,   'arg': ('-ie', '--skip-existing'                 ,) },
     SKIP_PREVIOUSLY_DOWNLOADED: { 'default': 'False',                   'type': bool,   'arg': ('-ip', '--skip-previously-downloaded'    ,) },
+    DOWNLOAD_PARENT_ALBUM:      { 'default': 'False',                   'type': bool,   'arg': ('--download-parent-ablum'                ,) },
     RETRY_ATTEMPTS:             { 'default': '1',                       'type': int,    'arg': ('--retry-attempts'                       ,) },
     BULK_WAIT_TIME:             { 'default': '1',                       'type': int,    'arg': ('--bulk-wait-time'                       ,) },
     OVERRIDE_AUTO_WAIT:         { 'default': 'False',                   'type': bool,   'arg': ('--override-auto-wait'                   ,) },
@@ -461,4 +463,8 @@ class Config:
     @classmethod
     def get_m3u8_relative_paths(cls) -> bool:
         return cls.get(M3U8_REL_PATHS)
+    
+    @classmethod
+    def get_download_parent_album(cls) -> bool:
+        return cls.get(DOWNLOAD_PARENT_ALBUM)
     

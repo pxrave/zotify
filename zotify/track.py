@@ -160,8 +160,29 @@ def handle_lyrics(track_id: str, song_name: str, filedir: PurePath) -> List[str]
     return lyrics
 
 
-def download_track(mode: str, track_id: str, extra_keys=None, wrapper_p_bars: list | None = None) -> None:
+def download_track(mode: str, track_id: str, extra_keys: dict | None = None, wrapper_p_bars: list | None = None) -> None:
     """ Downloads raw song audio from Spotify """
+    
+    # recursive header for parent album download
+    child_request_mode = mode
+    child_request_id = None
+    if Zotify.CONFIG.get_download_parent_album():
+        if mode == "album" and "M3U8_bypass" in extra_keys and extra_keys["M3U8_bypass"] is not None:
+            child_request_mode, child_request_id = extra_keys.pop("M3U8_bypass")
+        else:
+            album_id = total_tracks = None
+            try:
+                (raw, info) = Zotify.invoke_url(f'{TRACKS_URL}?ids={track_id}&market=from_token')
+                album_id = info[TRACKS][0][ALBUM][ID]
+                total_tracks = info[TRACKS][0][ALBUM][TOTAL_TRACKS]
+            except:
+                Printer.print(PrintChannel.ERRORS, f'###   FAILED TO FIND PARENT ALBUM FOR TRACK_ID: {track_id}   ###')
+                Printer.print(PrintChannel.ERRORS, "\n")
+            
+            if album_id and total_tracks and int(total_tracks) > 1:
+                from zotify.album import download_album
+                # uses album OUTPUT template for filename formatting, but handle m3u8 as if only this track was downloaded
+                return download_album(album_id, wrapper_p_bars, M3U8_bypass=(mode, track_id))
     
     if extra_keys is None:
         extra_keys = {}
@@ -217,12 +238,12 @@ def download_track(mode: str, track_id: str, extra_keys=None, wrapper_p_bars: li
             c = len([file for file in Path(filedir).iterdir() if file.match(filename.stem + "*")])
             filename = PurePath(filedir).joinpath(f'{filename.stem}_{c}{filename.suffix}')
         
-        if Zotify.CONFIG.get_export_m3u8():
-            if mode == "liked" and Zotify.CONFIG.get_liked_songs_archive_m3u8():
+        if Zotify.CONFIG.get_export_m3u8() and track_id == child_request_id:
+            if child_request_mode == "liked" and Zotify.CONFIG.get_liked_songs_archive_m3u8():
                 m3u_path = filedir / "Liked Songs.m3u8"
                 songs_m3u = fetch_m3u8_songs(m3u_path)
-            song_label = add_to_m3u8(mode, get_song_duration(track_id), song_name, filename)
-            if mode == "liked" and Zotify.CONFIG.get_liked_songs_archive_m3u8():
+            song_label = add_to_m3u8(child_request_mode, get_song_duration(track_id), song_name, filename)
+            if child_request_mode == "liked" and Zotify.CONFIG.get_liked_songs_archive_m3u8():
                 if songs_m3u is not None and song_label in songs_m3u[0]:
                     Zotify.CONFIG.Values[EXPORT_M3U8] = False
                     Path(filedir / (Zotify.datetime_launch + "_zotify.m3u8")).replace(m3u_path)
@@ -349,6 +370,9 @@ def download_track(mode: str, track_id: str, extra_keys=None, wrapper_p_bars: li
 
     prepare_download_loader.stop()
     Printer.print(PrintChannel.ERRORS, "\n")
+
+
+
 
 
 def convert_audio_format(filename) -> None:

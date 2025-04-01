@@ -99,6 +99,7 @@ Set arguments in the commandline like this: `-ie False` or `--codec mp3`. Wrap c
 | `MD_SAVE_LYRICS`             | `--md-save-lyrics`                    | True      | Whether lyrics should be saved in metadata, requires `--download-lyrics` be True            |
 | `SKIP_EXISTING_FILES`        | `-ie`, `--skip-existing`              | True      | Skip songs already present in the expected output directory                                 |
 | `SKIP_PREVIOUSLY_DOWNLOADED` | `-ip`, `--skip-previously-downloaded` | False     | Use the global song_archive file to skip previously downloaded songs                        |
+| `DOWNLOAD_PARENT_ALBUM`      | `--download-parent-album`             | False     | Download a track's parent album, instead of only itself (uses `OUTPUT_ALBUM` file pattern)  |
 | `RETRY_ATTEMPTS`             | `--retry-attempts`                    | 1         | Number of times Zotify will retry a failed request                                          |
 | `BULK_WAIT_TIME`             | `--bulk-wait-time`                    | 1         | The wait time between bulk downloads                                                        |
 | `OVERRIDE_AUTO_WAIT`         | `--override-auto-wait`                | False     | Totally disable wait time between songs with the risk of instability                        |

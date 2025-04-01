@@ -45,7 +45,7 @@ def get_artist_albums(artist_id):
     return album_ids
 
 
-def download_album(album, wrapper_p_bars: list | None = None):
+def download_album(album, wrapper_p_bars: list | None = None, M3U8_bypass: str | None = None):
     """ Downloads songs from an album """
     album_name, album_artist, tracks, total_discs = get_album_info(album)
     char_num = max({len(str(len(tracks))), 2})
@@ -62,12 +62,18 @@ def download_album(album, wrapper_p_bars: list | None = None):
     wrapper_p_bars.append(p_bar if Zotify.CONFIG.get_show_album_pbar() else pos)
     
     for n, track in p_bar:
+        
+        extra_keys={'album_num': str(n).zfill(char_num), 
+                    'album_artist': album_artist, 
+                    'album': album_name, 
+                    'album_id': album,
+                    'total_discs': total_discs}
+        
+        if M3U8_bypass is not None:
+            extra_keys['M3U8_bypass'] = M3U8_bypass
+        
         download_track('album', track[ID], 
-                       extra_keys={'album_num': str(n).zfill(char_num), 
-                                   'album_artist': album_artist, 
-                                   'album': album_name, 
-                                   'album_id': album,
-                                   "total_discs": total_discs},
+                       extra_keys=extra_keys,
                        wrapper_p_bars=wrapper_p_bars)
         p_bar.set_description(track[NAME])
         for bar in wrapper_p_bars:
