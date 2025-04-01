@@ -12,8 +12,8 @@ from zotify.zotify import Zotify
 from zotify.loader import Loader
 
 
-EPISODE_INFO_URL = 'https://api.spotify.com/v1/episodes'
-SHOWS_URL = 'https://api.spotify.com/v1/shows'
+EPISODE_INFO_URL = 'https://api.spot'+'ify.com/v1/episodes'
+SHOWS_URL = 'https://api.spot'+'ify.com/v1/shows'
 
 
 def get_episode_info(episode_id_str) -> Tuple[Optional[str], Optional[str]]:

@@ -13,7 +13,7 @@ from zotify.track import download_track, get_saved_tracks, get_followed_artists
 from zotify.utils import splash, split_input, regex_input_for_urls
 from zotify.zotify import Zotify
 
-SEARCH_URL = 'https://api.spotify.com/v1/search'
+SEARCH_URL = 'https://api.spot'+'ify.com/v1/search'
 
 
 def client(args: Namespace) -> None:

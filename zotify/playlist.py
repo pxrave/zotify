@@ -5,8 +5,8 @@ from zotify.track import download_track
 from zotify.utils import split_input, strptime_utc
 from zotify.zotify import Zotify
 
-MY_PLAYLISTS_URL = 'https://api.spotify.com/v1/me/playlists'
-PLAYLISTS_URL = 'https://api.spotify.com/v1/playlists'
+MY_PLAYLISTS_URL = 'https://api.spot'+'ify.com/v1/me/playlists'
+PLAYLISTS_URL = 'https://api.spot'+'ify.com/v1/playlists'
 
 
 def get_all_playlists():

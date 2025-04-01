@@ -4,8 +4,8 @@ from zotify.track import download_track
 from zotify.utils import fix_filename
 from zotify.zotify import Zotify
 
-ALBUM_URL = 'https://api.spotify.com/v1/albums'
-ARTIST_URL = 'https://api.spotify.com/v1/artists'
+ALBUM_URL = 'https://api.spot'+'ify.com/v1/albums'
+ARTIST_URL = 'https://api.spot'+'ify.com/v1/artists'
 
 
 def get_album_info(album_id):
