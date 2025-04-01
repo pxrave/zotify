@@ -136,7 +136,7 @@ To log out, just remove the configuration file and credentials file. Uninstallin
 
 ## Path Option Parsing
 
-All pathing-related options (`CREDENTIALS_LOCATION`, `ROOT_PODCAST_PATH`, `TEMP_DOWNLOAD_DIR`, `SONG_ARCHIVE_LOCATION`, `LYRICS_LOCATION`) accept absolute paths.
+All pathing-related options (`CREDENTIALS_LOCATION`, `ROOT_PODCAST_PATH`, `TEMP_DOWNLOAD_DIR`, `SONG_ARCHIVE_LOCATION`, `M3U8_LOCATION`, `LYRICS_LOCATION`) accept absolute paths.
 They will substitute an initial `"."` with `ROOT_PATH` and properly expand both `"~"` & `"~user"` constructs.
 
 The options `CREDENTIALS_LOCATION` and `SONG_ARCHIVE_LOCATION` use the following default locations depending on operating system:
@@ -197,7 +197,7 @@ If you see this, don't worry! Just try logging back in. If you see the incorrect
 Currently no user has reported their account getting banned after using Zotify.
 
 It is recommended you use Zotify with a burner account.
-Alternatively, there is a configuration option labeled ```DOWNLOAD_REAL_TIME```, this limits the download speed to the duration of the song being downloaded thus appearing less suspicious.
+Alternatively, there is a configuration option labeled `DOWNLOAD_REAL_TIME`, this limits the download speed to the duration of the song being downloaded thus appearing less suspicious.
 This option is much slower and is only recommended for premium users who wish to download songs in 320kbps without buying premium on a burner account.
 
 ## Disclaimer
