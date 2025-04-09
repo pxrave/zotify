@@ -106,7 +106,7 @@ CONFIG_VALUES = {
     MD_SAVE_LYRICS:             { 'default': 'True',                    'type': bool,   'arg': ('--md-save-lyrics'                       ,) },
     SKIP_EXISTING:              { 'default': 'True',                    'type': bool,   'arg': ('-ie', '--skip-existing'                 ,) },
     SKIP_PREVIOUSLY_DOWNLOADED: { 'default': 'False',                   'type': bool,   'arg': ('-ip', '--skip-previously-downloaded'    ,) },
-    DOWNLOAD_PARENT_ALBUM:      { 'default': 'False',                   'type': bool,   'arg': ('--download-parent-ablum'                ,) },
+    DOWNLOAD_PARENT_ALBUM:      { 'default': 'False',                   'type': bool,   'arg': ('--download-parent-album'                ,) },
     RETRY_ATTEMPTS:             { 'default': '1',                       'type': int,    'arg': ('--retry-attempts'                       ,) },
     BULK_WAIT_TIME:             { 'default': '1',                       'type': int,    'arg': ('--bulk-wait-time'                       ,) },
     OVERRIDE_AUTO_WAIT:         { 'default': 'False',                   'type': bool,   'arg': ('--override-auto-wait'                   ,) },
