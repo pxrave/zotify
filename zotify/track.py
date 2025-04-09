@@ -165,7 +165,7 @@ def download_track(mode: str, track_id: str, extra_keys: dict | None = None, wra
     
     # recursive header for parent album download
     child_request_mode = mode
-    child_request_id = None
+    child_request_id = track_id
     if Zotify.CONFIG.get_download_parent_album():
         if mode == "album" and "M3U8_bypass" in extra_keys and extra_keys["M3U8_bypass"] is not None:
             child_request_mode, child_request_id = extra_keys.pop("M3U8_bypass")

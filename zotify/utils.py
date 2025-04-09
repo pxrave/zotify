@@ -77,7 +77,7 @@ def add_to_m3u8(mode: str, song_duration: float, song_name: str, song_path: Pure
     with open(m3u_path, 'a', encoding='utf-8') as file:
         song_label_m3u = f"#EXTINF:{int(song_duration)}, {song_name}\n"
         if Zotify.CONFIG.get_m3u8_relative_paths():
-            song_path = song_path.relative_to(m3u_path.parent, walk_up=True)
+            song_path = os.path.relpath(song_path, m3u_path.parent)
         
         file.write(song_label_m3u)
         file.write(f"{song_path}\n\n")
