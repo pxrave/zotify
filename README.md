@@ -194,7 +194,7 @@ If you see this, don't worry! Just try logging back in. If you see the incorrect
 
 ## What do I do if I see repeated "Failed fetching audio key!" errors?
 
-If you see this, don't worry! Recent API changes have introdcued rate limits, meaning that requesting track info and downloading may be rejected if too many requests are sent in a short time period. This can be mitigated by changing enabling `DOWNLOAD_REAL_TIME` and/or setting a nonzero `BULK_WAIT_TIME`. A recommended `BULK_WAIT_TIME` of `30` seconds has been shown to significantly minimize, if not completely negate, audio key request denials (see [this analysis by HxDxRx](https://github.com/zotify-dev/zotify/issues/186#issuecomment-2608381052))
+If you see this, don't worry! Recent API changes have introduced rate limits, where requests for track info or audio streams may be rejected if too many requests are sent in a short time period. This can be mitigated by enabling `DOWNLOAD_REAL_TIME` and/or setting a nonzero `BULK_WAIT_TIME`. A recommended `BULK_WAIT_TIME` of `30` seconds has been shown to significantly minimize, if not completely negate, audio key request denials (see [this analysis by HxDxRx](https://github.com/zotify-dev/zotify/issues/186#issuecomment-2608381052))
 
 ## Will my account get banned if I use this tool?
 
