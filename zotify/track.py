@@ -387,16 +387,16 @@ def convert_audio_format(filename) -> None:
         bitrate = Zotify.CONFIG.get_transcode_bitrate()
         if bitrate in {"auto", ""}:
             bitrates = {
-                'auto': '320k' if Zotify.check_premium() else '160k',
-                'normal': '96k',
-                'high': '160k',
-                'very_high': '320k'
+                'auto': '0' if Zotify.check_premium() else '2',
+                'normal': '3',
+                'high': '2',
+                'very_high': '0'
             }
             bitrate = bitrates[Zotify.CONFIG.get_download_quality()]
     
     output_params = ['-c:a', file_codec]
     if bitrate is not None:
-        output_params += ['-b:a', bitrate]
+        output_params += ['-q:a', bitrate]
     
     try:
         ff_m = ffmpy.FFmpeg(
