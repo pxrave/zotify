@@ -390,8 +390,8 @@ def strptime_utc(dtstr) -> datetime.datetime:
     return datetime.datetime.strptime(dtstr[:-1], '%Y-%m-%dT%H:%M:%S').replace(tzinfo=datetime.timezone.utc)
 
 
-waittime = Zotify.CONFIG.get_bulk_wait_time()
 def wait_between_downloads() -> None:
+    waittime = Zotify.CONFIG.get_bulk_wait_time()
     if not waittime or waittime <= 0:
         return
     
