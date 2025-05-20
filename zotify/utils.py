@@ -15,7 +15,7 @@ from zotify.const import ARTIST, GENRE, TRACKTITLE, ALBUM, YEAR, DISCNUMBER, TRA
 from zotify.zotify import Zotify
 
 
-def create_download_directory(download_path: str) -> None:
+def create_download_directory(download_path: str | PurePath) -> None:
     """ Create directory and add a hidden file with song ids """
     Path(download_path).mkdir(parents=True, exist_ok=True)
 
@@ -337,7 +337,7 @@ def regex_input_for_urls(search_input) -> Tuple[str, str, str, str, str, str]:
     return track_id_str, album_id_str, playlist_id_str, episode_id_str, show_id_str, artist_id_str
 
 
-def fix_filename(name):
+def fix_filename(name: str | PurePath | Path ):
     """
     Replace invalid characters on Linux/Windows/MacOS with underscores.
     List from https://stackoverflow.com/a/31976060/819417
