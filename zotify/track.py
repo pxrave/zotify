@@ -13,7 +13,7 @@ from zotify.const import TRACKS, ALBUM, GENRES, NAME, ITEMS, DISC_NUMBER, TRACK_
 from zotify.config import EXPORT_M3U8
 from zotify.termoutput import Printer, PrintChannel
 from zotify.utils import fix_filename, set_audio_tags, set_music_thumbnail, create_download_directory, add_to_m3u8, fetch_m3u8_songs, \
-    get_directory_song_ids, add_to_directory_song_ids, get_previously_downloaded, add_to_archive, fmt_seconds
+    get_directory_song_ids, add_to_directory_song_ids, get_previously_downloaded, add_to_archive, fmt_seconds, wait_between_downloads
 from zotify.zotify import Zotify
 import traceback
 from zotify.loader import Loader
@@ -353,9 +353,8 @@ def download_track(mode: str, track_id: str, extra_keys: dict | None = None, wra
                     # add song ID to download directory's .song_ids file
                     if not check_local:
                         add_to_directory_song_ids(filedir, scraped_song_id, PurePath(filename).name, artists[0], name)
-
-                    if Zotify.CONFIG.get_bulk_wait_time():
-                        time.sleep(Zotify.CONFIG.get_bulk_wait_time())
+                    
+                    wait_between_downloads()
             
             
             

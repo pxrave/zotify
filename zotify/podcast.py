@@ -5,7 +5,7 @@ from librespot.metadata import EpisodeId
 
 from zotify.const import ERROR, ID, ITEMS, NAME, SHOW, DURATION_MS
 from zotify.termoutput import PrintChannel, Printer
-from zotify.utils import create_download_directory, fix_filename
+from zotify.utils import create_download_directory, fix_filename, wait_between_downloads
 from zotify.zotify import Zotify
 from zotify.loader import Loader
 
@@ -164,14 +164,12 @@ def download_episode(episode_id, wrapper_p_bars: list | None = None) -> None:
                                 time.sleep(delta_want - delta_real)
                                 
                 
-                if Zotify.CONFIG.get_bulk_wait_time():
-                    time.sleep(Zotify.CONFIG.get_bulk_wait_time())
+                wait_between_downloads()
         else:
             filepath = PurePath(download_directory).joinpath(f"{filename}.mp3")
             download_podcast_directly(direct_download_url, filepath)
             
-            if Zotify.CONFIG.get_bulk_wait_time():
-                time.sleep(Zotify.CONFIG.get_bulk_wait_time())
+            wait_between_downloads()
     
     prepare_download_loader.stop()
     Printer.print(PrintChannel.ERRORS, "\n")

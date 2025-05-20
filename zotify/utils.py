@@ -4,8 +4,8 @@ import os
 import platform
 import re
 import subprocess
+import time
 from pathlib import Path, PurePath
-from typing import List, Tuple
 
 import music_tag
 import requests
@@ -13,6 +13,7 @@ import requests
 from zotify.const import ARTIST, GENRE, TRACKTITLE, ALBUM, YEAR, DISCNUMBER, TRACKNUMBER, ARTWORK, \
     WINDOWS_SYSTEM, ALBUMARTIST, TOTALTRACKS, TOTALDISCS, EXT_MAP, LYRICS, COMPILATION
 from zotify.zotify import Zotify
+from zotify.termoutput import PrintChannel, Printer
 
 
 def create_download_directory(download_path: str | PurePath) -> None:
@@ -28,7 +29,7 @@ def create_download_directory(download_path: str | PurePath) -> None:
             pass
 
 
-def get_previously_downloaded() -> List[str]:
+def get_previously_downloaded() -> list[str]:
     """ Returns list of all time downloaded songs """
 
     ids = []
@@ -99,7 +100,7 @@ def fetch_m3u8_songs(m3u_path: PurePath) -> list[str] | None:
     return linesraw
 
 
-def get_directory_song_ids(download_path: str) -> List[str]:
+def get_directory_song_ids(download_path: str) -> list[str]:
     """ Gets song ids of songs in directory """
     
     song_ids = []
@@ -137,7 +138,7 @@ def get_downloaded_song_duration(filename: str) -> float:
     return duration
 
 
-def split_input(selection) -> List[str]:
+def split_input(selection) -> list[str]:
     """ Returns a list of inputted strings """
     inputs = []
     if '-' in selection:
@@ -170,7 +171,7 @@ def clear() -> None:
         os.system('clear')
 
 
-def set_audio_tags(filename, artists: List[str], genres: List[str], name, album_name, album_artist, release_year, disc_number, track_number, total_tracks, total_discs, compilation: int, lyrics: List[str] | None) -> None:
+def set_audio_tags(filename, artists: list[str], genres: list[str], name, album_name, album_artist, release_year, disc_number, track_number, total_tracks, total_discs, compilation: int, lyrics: list[str] | None) -> None:
     """ sets music_tag metadata """
     tags = music_tag.load_file(filename)
     tags[ALBUMARTIST] = album_artist
@@ -203,7 +204,7 @@ def set_audio_tags(filename, artists: List[str], genres: List[str], name, album_
     tags.save()
 
 
-def conv_artist_format(artists: List[str]) -> List[str] | str:
+def conv_artist_format(artists: list[str]) -> list[str] | str:
     """ Returns converted artist format """
     if Zotify.CONFIG.get_artist_delimiter() == "":
         return artists
@@ -211,7 +212,7 @@ def conv_artist_format(artists: List[str]) -> List[str] | str:
         return Zotify.CONFIG.get_artist_delimiter().join(artists)
 
 
-def conv_genre_format(genres: List[str]) -> List[str] | str:
+def conv_genre_format(genres: list[str]) -> list[str] | str:
     """ Returns converted genre format """
     if not Zotify.CONFIG.get_all_genres():
         return genres[0]
@@ -248,7 +249,7 @@ def set_music_thumbnail_tag(filename, img: bytes) -> None:
     tags.save()
 
 
-def regex_input_for_urls(search_input) -> Tuple[str, str, str, str, str, str]:
+def regex_input_for_urls(search_input) -> tuple[str, str, str, str, str, str]:
     """ Since many kinds of search may be passed at the command line, process them all here. """
     track_uri_search = re.search(
         r'^spotify:track:(?P<TrackID>[0-9a-zA-Z]{22})$', search_input)
@@ -340,7 +341,7 @@ def regex_input_for_urls(search_input) -> Tuple[str, str, str, str, str, str]:
 def fix_filename(name: str | PurePath | Path ):
     """
     Replace invalid characters on Linux/Windows/MacOS with underscores.
-    List from https://stackoverflow.com/a/31976060/819417
+    list from https://stackoverflow.com/a/31976060/819417
     Trailing spaces & periods are ignored on Windows.
     >>> fix_filename("  COM1  ")
     '_ COM1 _'
@@ -387,3 +388,13 @@ def fmt_seconds(secs: float) -> str:
 
 def strptime_utc(dtstr) -> datetime.datetime:
     return datetime.datetime.strptime(dtstr[:-1], '%Y-%m-%dT%H:%M:%S').replace(tzinfo=datetime.timezone.utc)
+
+
+waittime = Zotify.CONFIG.get_bulk_wait_time()
+def wait_between_downloads() -> None:
+    if not waittime or waittime <= 0:
+        return
+    
+    if waittime > 5:
+        Printer.print(PrintChannel.DOWNLOADS, f'###   WAITING FOR {waittime} SECONDS BETWEEN DOWNLOADS   ###')
+    time.sleep(waittime)
