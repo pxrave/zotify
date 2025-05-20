@@ -109,7 +109,6 @@ LINUX_SYSTEM = 'Linux'
 CODEC_MAP = {
     'aac': 'aac',
     'fdk_aac': 'libfdk_aac',
-    'm4a': 'aac',
     'mp3': 'libmp3lame',
     'ogg': 'copy',
     'opus': 'libopus',
@@ -120,7 +119,6 @@ CODEC_MAP = {
 EXT_MAP = {
     'aac': 'm4a',
     'fdk_aac': 'm4a',
-    'm4a': 'm4a',
     'mp3': 'mp3',
     'ogg': 'ogg',
     'opus': 'ogg',
