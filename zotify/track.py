@@ -2,7 +2,7 @@ from pathlib import Path, PurePath
 import math
 import time
 import uuid
-from typing import Any, Tuple, List
+from typing import Any
 
 from librespot.metadata import TrackId
 import ffmpy
@@ -13,7 +13,7 @@ from zotify.const import TRACKS, ALBUM, GENRES, NAME, ITEMS, DISC_NUMBER, TRACK_
 from zotify.config import EXPORT_M3U8
 from zotify.termoutput import Printer, PrintChannel
 from zotify.utils import fix_filename, set_audio_tags, set_music_thumbnail, create_download_directory, add_to_m3u8, fetch_m3u8_songs, \
-    get_directory_song_ids, add_to_directory_song_ids, get_previously_downloaded, add_to_archive, fmt_seconds
+    get_directory_song_ids, add_to_directory_song_ids, get_previously_downloaded, add_to_archive, fmt_seconds, wait_between_downloads
 from zotify.zotify import Zotify
 import traceback
 from zotify.loader import Loader
@@ -46,7 +46,7 @@ def get_followed_artists() -> list:
     return artists
 
 
-def get_song_info(song_id) -> Tuple[List[str], List[Any], str, str, Any, Any, Any, Any, Any, Any, Any, Any, Any, int]:
+def get_song_info(song_id) -> tuple[list[str], list[Any], str, str, Any, Any, Any, Any, Any, Any, Any, Any, Any, int]:
     """ Retrieves metadata for downloaded songs """
     with Loader(PrintChannel.PROGRESS_INFO, "Fetching track information..."):
         (raw, info) = Zotify.invoke_url(f'{TRACKS_URL}?ids={song_id}&market=from_token')
@@ -82,7 +82,7 @@ def get_song_info(song_id) -> Tuple[List[str], List[Any], str, str, Any, Any, An
         raise ValueError(f'Failed to parse TRACKS_URL response: {str(e)}\n{raw}')
 
 
-def get_song_genres(rawartists: List[str], track_name: str) -> List[str]:
+def get_song_genres(rawartists: list[str], track_name: str) -> list[str]:
     if Zotify.CONFIG.get_save_genres():
         try:
             genres = []
@@ -107,7 +107,7 @@ def get_song_genres(rawartists: List[str], track_name: str) -> List[str]:
         return ['']
 
 
-def get_song_lyrics(song_id: str) -> List[str]:
+def get_song_lyrics(song_id: str) -> list[str]:
     raw, lyrics_dict = Zotify.invoke_url('https://spclient.wg.spot' + f'ify.com/color-lyrics/v2/track/{song_id}')
     if lyrics_dict:
         try:
@@ -142,7 +142,7 @@ def get_song_duration(song_id: str) -> float:
     return duration
 
 
-def handle_lyrics(track_id: str, song_name: str, filedir: PurePath) -> List[str] | None:
+def handle_lyrics(track_id: str, song_name: str, filedir: PurePath) -> list[str] | None:
     lyrics = None
     try:
         lyricdir = Zotify.CONFIG.get_lyrics_location()
@@ -353,9 +353,8 @@ def download_track(mode: str, track_id: str, extra_keys: dict | None = None, wra
                     # add song ID to download directory's .song_ids file
                     if not check_local:
                         add_to_directory_song_ids(filedir, scraped_song_id, PurePath(filename).name, artists[0], name)
-
-                    if Zotify.CONFIG.get_bulk_wait_time():
-                        time.sleep(Zotify.CONFIG.get_bulk_wait_time())
+                    
+                    wait_between_downloads()
             
             
             

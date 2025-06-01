@@ -24,7 +24,10 @@ class Printer:
     @staticmethod
     def print(channel: PrintChannel, msg: str) -> None:
         if Zotify.CONFIG.get(channel.value):
-            columns, _ = get_terminal_size()
+            try:
+                columns, _ = get_terminal_size()
+            except OSError:
+                columns = 80
             file = sys.stdout
             if channel in ERROR_CHANNEL:
                 file = sys.stderr
@@ -37,7 +40,10 @@ class Printer:
     @staticmethod
     def print_loader(channel: PrintChannel, msg: str) -> None:
         if Zotify.CONFIG.get(channel.value):
-            columns, _ = get_terminal_size()
+            try:
+                columns, _ = get_terminal_size()
+            except OSError:
+                columns = 80
             print("\r\033[A" 
                   + ' ' * columns 
                   + '\r' + msg, flush=True)
